@@ -122,6 +122,7 @@ jobs:
           echo VCINSTALLDIR=%VCINSTALLDIR%>>%GITHUB_ENV%
           echo VCToolsInstallDir=%VCToolsInstallDir%>>%GITHUB_ENV%
           echo WindowsSdkDir=%WindowsSdkDir%>>%GITHUB_ENV%
+          echo Platform=x64>>%GITHUB_ENV%
 
       - name: NuGet sources.
         run: |
