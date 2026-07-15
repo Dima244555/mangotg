@@ -5206,8 +5206,8 @@ void Message::drawInfo(
 	const auto size = _bottomInfo.currentSize();
 	const auto dateX = infoRight - size.width();
 	const auto dateY = infoBottom - size.height();
-	const auto keptDeleted = item->history()->owner().isMessageKeptDeleted(
-		item->fullId());
+	const auto keptDeleted = data()->history()->owner().isMessageKeptDeleted(
+		data()->fullId());
 	if (keptDeleted) {
 		p.setPen(st->msgServiceFg());
 		const auto badge = QString::fromUtf8("\xF0\x9F\x97\x91 ");
