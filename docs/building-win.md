@@ -13,11 +13,11 @@ The build is done in **Visual Studio 2026** with **10.0.26100.0** SDK version.
 
 Choose an empty folder for the future build, for example **D:\\TBuild**. It will be named ***BuildPath*** in the rest of this document. Create two folders there, ***BuildPath*\\ThirdParty** and ***BuildPath*\\Libraries**.
 
-The default modern toolset from Visual Studio 2026 (`v145`) does not support Windows 7, so for Telegram Desktop you must use `-vcvars_ver=14.44` (`v144.4`, based on `v143` with Windows 7 support).
+The default modern toolset from Visual Studio 2026 (`v145`) does not support Windows 7, so for Mangogram Desktop you must use `-vcvars_ver=14.44` (`v144.4`, based on `v143` with Windows 7 support).
 
 ### Obtain your API credentials
 
-You will require **api_id** and **api_hash** to access the Telegram API servers. To learn how to obtain them [click here][api_credentials].
+You will require **api_id** and **api_hash** to access the Mangogram API servers. To learn how to obtain them [click here][api_credentials].
 
 ## Install third party software
 
@@ -27,7 +27,7 @@ You will require **api_id** and **api_hash** to access the Telegram API servers.
 ## Choose architecture and initialize terminal
 
 Before preparing libraries and running build commands, initialize the Visual Studio environment for your target architecture.
-The default modern toolset from Visual Studio 2026 (`v145`) does not support Windows 7, so for Telegram Desktop you must use `-vcvars_ver=14.44` (`v144.4`, based on `v143` with Windows 7 support).
+The default modern toolset from Visual Studio 2026 (`v145`) does not support Windows 7, so for Mangogram Desktop you must use `-vcvars_ver=14.44` (`v144.4`, based on `v143` with Windows 7 support).
 
 For `win` (32-bit):
 
@@ -43,12 +43,12 @@ Run both `Clone source code and prepare libraries` and `Build the project` secti
 
 In the initialized terminal, go to ***BuildPath*** and run
 
-    git clone --recursive https://github.com/telegramdesktop/tdesktop.git
-    tdesktop\Telegram\build\prepare\win.bat
+    git clone --recursive https://github.com/mangogramdesktop/tdesktop.git
+    tdesktop\Mangogram\build\prepare\win.bat
 
 ## Build the project
 
-Go to ***BuildPath*\\tdesktop\\Telegram** and run (using [your **api_id** and **api_hash**](#obtain-your-api-credentials)):
+Go to ***BuildPath*\\tdesktop\\Mangogram** and run (using [your **api_id** and **api_hash**](#obtain-your-api-credentials)):
 
 For `win` (32-bit):
 
@@ -58,9 +58,9 @@ For `win64` (64-bit):
 
     configure.bat x64 -D TDESKTOP_API_ID=YOUR_API_ID -D TDESKTOP_API_HASH=YOUR_API_HASH
 
-* Open ***BuildPath*\\tdesktop\\out\\Telegram.slnx** in Visual Studio 2026
-* Select Telegram project and press Build > Build Telegram (Debug and Release configurations)
-* The result Telegram.exe will be located in **D:\TBuild\tdesktop\out\Debug** (and **Release**)
+* Open ***BuildPath*\\tdesktop\\out\\Mangogram.slnx** in Visual Studio 2026
+* Select Mangogram project and press Build > Build Mangogram (Debug and Release configurations)
+* The result Mangogram.exe will be located in **D:\TBuild\tdesktop\out\Debug** (and **Release**)
 
 ### Qt Visual Studio Tools
 

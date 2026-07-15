@@ -14,13 +14,13 @@ on:
       - '!.github/workflows/win.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/docker/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.sh'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/docker/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.sh'
+      - 'Mangogram/Mangogram.plist'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -33,13 +33,13 @@ on:
       - '!.github/workflows/win.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/docker/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.sh'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/docker/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.sh'
+      - 'Mangogram/Mangogram.plist'
 
 jobs:
 
@@ -57,7 +57,7 @@ jobs:
     env:
       UPLOAD_ARTIFACT: "true"
       ONLY_CACHE: "false"
-      PREPARE_PATH: "Telegram/build/prepare/prepare.py"
+      PREPARE_PATH: "Mangogram/build/prepare/prepare.py"
 
     defaults:
       run:
@@ -166,12 +166,12 @@ jobs:
 
       - name: Libraries.
         run: |
-          %TBUILD%\%REPO_NAME%\Telegram\build\prepare\win.bat skip-release silent ${{ matrix.qt }}
+          %TBUILD%\%REPO_NAME%\Mangogram\build\prepare\win.bat skip-release silent ${{ matrix.qt }}
 
       - name: Read configuration matrix.
         shell: bash
         run: |
-          ARTIFACT_NAME="Telegram"
+          ARTIFACT_NAME="Mangogram"
 
           ARCH=""
           if [ -n "${{ matrix.arch }}" ]; then
@@ -223,10 +223,10 @@ jobs:
         shell: bash
         run: find $LibrariesPath '(' '(' ! '(' -name '*.lib' -o -name '*.a' -o -name '*.exe' -o -name '*.h' -o -name '*.hpp' -o -name '*.inc' -o -name '*.cmake' -o -path '*/include/*' -o -path '*/objects-*' -o -path '*/cache_keys/*' -o -path '*/patches/*' ')' -type f ')' -o -empty ')' -delete
 
-      - name: Telegram Desktop build.
+      - name: Mangogram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
-          cd %TBUILD%\%REPO_NAME%\Telegram
+          cd %TBUILD%\%REPO_NAME%\Mangogram
 
           call configure.bat ^
           %TDESKTOP_BUILD_GENERATOR% ^

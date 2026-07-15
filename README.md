@@ -1,14 +1,14 @@
-# [Telegram Desktop][telegram_desktop] – Official Messenger
+# [Mangogram Desktop][mangogram_desktop] – Official Messenger
 
-This is the complete source code and the build instructions for the official [Telegram][telegram] messenger desktop client, based on the [Telegram API][telegram_api] and the [MTProto][telegram_proto] secure protocol.
+This is the complete source code and the build instructions for the official [Mangogram][mangogram] messenger desktop client, based on the [Mangogram API][mangogram_api] and the [MTProto][mangogram_proto] secure protocol.
 
-[![Version](https://badge.fury.io/gh/telegramdesktop%2Ftdesktop.svg)](https://github.com/telegramdesktop/tdesktop/releases)
-[![Build Status](https://github.com/telegramdesktop/tdesktop/workflows/Windows./badge.svg)](https://github.com/telegramdesktop/tdesktop/actions)
-[![Build Status](https://github.com/telegramdesktop/tdesktop/workflows/MacOS./badge.svg)](https://github.com/telegramdesktop/tdesktop/actions)
-[![Build Status](https://github.com/telegramdesktop/tdesktop/workflows/Linux./badge.svg)](https://github.com/telegramdesktop/tdesktop/actions)
+[![Version](https://badge.fury.io/gh/mangogramdesktop%2Ftdesktop.svg)](https://github.com/mangogramdesktop/tdesktop/releases)
+[![Build Status](https://github.com/mangogramdesktop/tdesktop/workflows/Windows./badge.svg)](https://github.com/mangogramdesktop/tdesktop/actions)
+[![Build Status](https://github.com/mangogramdesktop/tdesktop/workflows/MacOS./badge.svg)](https://github.com/mangogramdesktop/tdesktop/actions)
+[![Build Status](https://github.com/mangogramdesktop/tdesktop/workflows/Linux./badge.svg)](https://github.com/mangogramdesktop/tdesktop/actions)
 [![Built with Depot](https://img.shields.io/badge/Built%20with-Depot.dev-46A75A)](https://depot.dev)
 
-[![Preview of Telegram Desktop][preview_image]][preview_image_url]
+[![Preview of Mangogram Desktop][preview_image]][preview_image_url]
 
 The source code is published under GPLv3 with OpenSSL exception, the license is available [here][license].
 
@@ -16,12 +16,12 @@ The source code is published under GPLv3 with OpenSSL exception, the license is 
 
 The latest version is available for
 
-* [Windows 7 and above (64 bit)](https://telegram.org/dl/desktop/win64) ([portable](https://telegram.org/dl/desktop/win64_portable))
-* [Windows 7 and above (32 bit)](https://telegram.org/dl/desktop/win) ([portable](https://telegram.org/dl/desktop/win_portable))
-* [macOS 10.13 and above](https://telegram.org/dl/desktop/mac)
-* [Linux static build for 64 bit](https://telegram.org/dl/desktop/linux)
-* [Snap](https://snapcraft.io/telegram-desktop)
-* [Flatpak](https://flathub.org/apps/details/org.telegram.desktop)
+* [Windows 7 and above (64 bit)](https://mangogram.org/dl/desktop/win64) ([portable](https://mangogram.org/dl/desktop/win64_portable))
+* [Windows 7 and above (32 bit)](https://mangogram.org/dl/desktop/win) ([portable](https://mangogram.org/dl/desktop/win_portable))
+* [macOS 10.13 and above](https://mangogram.org/dl/desktop/mac)
+* [Linux static build for 64 bit](https://mangogram.org/dl/desktop/linux)
+* [Snap](https://snapcraft.io/mangogram-desktop)
+* [Flatpak](https://flathub.org/apps/details/org.mangogram.desktop)
 
 ## Old system versions
 
@@ -74,16 +74,16 @@ Version **1.8.15** was the last that supports older systems
 * [GNU/Linux using Docker][linux]
 
 [//]: # (LINKS)
-[telegram]: https://telegram.org
-[telegram_desktop]: https://desktop.telegram.org
-[telegram_api]: https://core.telegram.org
-[telegram_proto]: https://core.telegram.org/mtproto
+[mangogram]: https://mangogram.org
+[mangogram_desktop]: https://desktop.mangogram.org
+[mangogram_api]: https://core.mangogram.org
+[mangogram_proto]: https://core.mangogram.org/mtproto
 [license]: LICENSE
 [win]: docs/building-win.md
 [mac]: docs/building-mac.md
 [linux]: docs/building-linux.md
-[preview_image]: https://github.com/telegramdesktop/tdesktop/blob/dev/docs/assets/preview.png "Preview of Telegram Desktop"
-[preview_image_url]: https://raw.githubusercontent.com/telegramdesktop/tdesktop/dev/docs/assets/preview.png
+[preview_image]: https://github.com/mangogramdesktop/tdesktop/blob/dev/docs/assets/preview.png "Preview of Mangogram Desktop"
+[preview_image_url]: https://raw.githubusercontent.com/mangogramdesktop/tdesktop/dev/docs/assets/preview.png
 
 ## Thanks to
 

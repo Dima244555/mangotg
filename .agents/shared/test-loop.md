@@ -61,7 +61,7 @@ Early-escalation rule: if two consecutive ASSESS rounds produce the **same failu
 the attempt budget chasing it.
 
 UNRECOVERABLE conditions: the app reaches a login screen / `AUTH_KEY_DUPLICATED` and re-copying the
-test account does not recover it; `test_TelegramForcePortable` is missing when SETUP runs; or a crash
+test account does not recover it; `test_MangogramForcePortable` is missing when SETUP runs; or a crash
 has no usable diagnostic after one retry. A file-lock build error (`LNK1104`, `C1041`, access denied,
 file in use) is a repository hard stop: do not retry or work around it; ask the user to close the app
 and debugger.
@@ -93,46 +93,46 @@ style of recent `git log` subjects.
 
 The debug build runs in portable mode out of `out/Debug/`. Three sibling folders matter:
 
-- `test_TelegramForcePortable` — the golden test account, prepared by the user. Read-only SOURCE,
+- `test_MangogramForcePortable` — the golden test account, prepared by the user. Read-only SOURCE,
   never modified by tests. (Its presence is the launch gate; the wrapper aborts if it is missing.)
-- `TelegramForcePortable` — the LIVE folder the app actually uses (its presence is what puts the
+- `MangogramForcePortable` — the LIVE folder the app actually uses (its presence is what puts the
   build in portable mode). Disposable; recreated fresh each run.
-- `real_TelegramForcePortable` — the user's real data, preserved once so manual use survives.
+- `real_MangogramForcePortable` — the user's real data, preserved once so manual use survives.
 
 **SETUP — run at the START of every test run, with NO app instance alive. Idempotent: it
 guarantees a clean test account no matter how the previous run ended.**
-1. If `TelegramForcePortable` exists AND `real_TelegramForcePortable` does NOT, rename
-   `TelegramForcePortable` -> `real_TelegramForcePortable`. (Captures the user's real data exactly
+1. If `MangogramForcePortable` exists AND `real_MangogramForcePortable` does NOT, rename
+   `MangogramForcePortable` -> `real_MangogramForcePortable`. (Captures the user's real data exactly
    once; guarded so it is never overwritten afterward.)
-2. If `TelegramForcePortable` still exists, delete it. (Safe: `real_...` now holds the real data, so
+2. If `MangogramForcePortable` still exists, delete it. (Safe: `real_...` now holds the real data, so
    this only discards a leftover live/test copy.)
-3. Copy `test_TelegramForcePortable` -> `TelegramForcePortable`. The live folder is now a fresh copy
+3. Copy `test_MangogramForcePortable` -> `MangogramForcePortable`. The live folder is now a fresh copy
    of the golden test account — ready to launch.
 
 **CLEANUP — optional, after a run.** The SETUP steps already self-heal, so cleanup exists only to
 leave the user's real data live for manual use:
-1. Delete `TelegramForcePortable`.
-2. Copy `real_TelegramForcePortable` -> `TelegramForcePortable`.
+1. Delete `MangogramForcePortable`.
+2. Copy `real_MangogramForcePortable` -> `MangogramForcePortable`.
 
 Why this is safe: `real_...` is written exactly once (step 1 is guarded by "real does not exist")
 and `test_...` is only ever a copy source, so both the user's real data and the golden test account
-are structurally protected — only `TelegramForcePortable` is ever destroyed. Use `robocopy /MIR`
+are structurally protected — only `MangogramForcePortable` is ever destroyed. Use `robocopy /MIR`
 (or `Copy-Item -Recurse` / `Remove-Item -Recurse -Force`) for the folder ops.
 
-**Serialize app runs.** Never have two `Telegram.exe` instances alive against this account at once —
+**Serialize app runs.** Never have two `Mangogram.exe` instances alive against this account at once —
 concurrent reuse of one auth key can trigger a server-side session reset. Before SETUP, launching, or
 rebuilding, kill any straggler **of THIS checkout's binary only** — the one whose full executable
-path is `EXE` (`out/Debug/Telegram.exe` in this checkout). Match on the full path; do NOT blanket-kill
-every `Telegram.exe` on the machine. The user may be running a system-installed client or another
+path is `EXE` (`out/Debug/Mangogram.exe` in this checkout). Match on the full path; do NOT blanket-kill
+every `Mangogram.exe` on the machine. The user may be running a system-installed client or another
 checkout's build against unrelated accounts — those use different auth keys, never conflict with this
 account, and MUST be left alive. On Windows, scope the kill by path:
 
     $exe = (Resolve-Path "$EXE").Path
-    Get-CimInstance Win32_Process -Filter "Name = 'Telegram.exe'" |
+    Get-CimInstance Win32_Process -Filter "Name = 'Mangogram.exe'" |
       Where-Object { $_.ExecutablePath -eq $exe } |
       ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 
-`taskkill /IM Telegram.exe /F` is forbidden here and anywhere else in this loop — it is image-name-wide
+`taskkill /IM Mangogram.exe /F` is forbidden here and anywhere else in this loop — it is image-name-wide
 and takes down the user's unrelated clients. Every "kill stragglers" / "taskkill" step below means
 this path-scoped kill.
 
@@ -264,7 +264,7 @@ highest level that still exercises the change (often a direct data-layer call li
 
 ### Finding widgets in an overlay (CRITICAL — avoids a guaranteed crash)
 
-Telegram's custom widgets (`Ui::InputField`, `Ui::FlatLabel`, `Ui::RpWidget`, boxes, buttons, …)
+Mangogram's custom widgets (`Ui::InputField`, `Ui::FlatLabel`, `Ui::RpWidget`, boxes, buttons, …)
 do **NOT** declare `Q_OBJECT` — they have no own meta-object. So `QObject::findChildren<T*>()` does
 **not** filter by type for them: with no distinct meta-object it matches the nearest moc'd base
 (`QWidget`), i.e. it returns **every** child widget blindly cast to `T*`. The moment you use one as
@@ -364,7 +364,7 @@ in this order before deciding the verdict:
 2. **`<workdir>/tdata/working`** — the crash report the reporter wrote: the `Assertion:` /
    `CrtAssert:` annotations, the failed `file:line`, and `Caught signal …` / minidump id. Plain text;
    read it directly. `<workdir>` is the launch `-workdir` (in portable test runs,
-   `out/Debug/TelegramForcePortable/`).
+   `out/Debug/MangogramForcePortable/`).
 3. **`<workdir>/tdata/dumps/*.dmp`** — the minidump (full stack, needs symbols to read; note its path
    in `test.md`, don't try to symbolize inline).
 
@@ -400,7 +400,7 @@ the same signature → BLOCKED (early-escalation rule).
 
 ### Leave no test binary behind
 
-The on-disk `EXE` (`out/Debug/Telegram.exe`) always contains the compiled overlay after a test run —
+The on-disk `EXE` (`out/Debug/Mangogram.exe`) always contains the compiled overlay after a test run —
 `git reset --hard` only reverts the source, not the built binary. So when the loop reaches a TERMINAL
 verdict (APPROVED, BLOCKED, UNRECOVERABLE, or attempt cap), after the final path-scoped kill and
 `git reset --hard <IMPL_SHA>`, **delete the built `EXE`** so no overlay-laden test binary is left for

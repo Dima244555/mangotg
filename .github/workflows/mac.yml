@@ -12,12 +12,12 @@ on:
       - '!.github/workflows/mac.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/docker/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/configure.bat'
+      - 'Mangogram/build/docker/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/configure.bat'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -29,12 +29,12 @@ on:
       - '!.github/workflows/mac.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/docker/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/configure.bat'
+      - 'Mangogram/build/docker/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/configure.bat'
 
 jobs:
 
@@ -49,7 +49,7 @@ jobs:
     env:
       UPLOAD_ARTIFACT: "true"
       ONLY_CACHE: "false"
-      PREPARE_PATH: "Telegram/build/prepare/prepare.py"
+      PREPARE_PATH: "Mangogram/build/prepare/prepare.py"
 
     steps:
       - name: Get repository name.
@@ -88,23 +88,23 @@ jobs:
 
       - name: Libraries.
         run: |
-          ./$REPO_NAME/Telegram/build/prepare/mac.sh skip-release silent
+          ./$REPO_NAME/Mangogram/build/prepare/mac.sh skip-release silent
 
       - name: Free up some disk space.
         run: find Libraries '(' '(' ! '(' -name '*.a' -o -name '*.h' -o -name '*.hpp' -o -name '*.inc' -o -name '*.cmake' -o -path '*/include/*' -o -path '*/objects-*' -o -path '*/cache_keys/*' -o -path '*/patches/*' -o -perm +111 ')' -type f ')' -o -empty ')' -delete
 
-      - name: Telegram Desktop build.
+      - name: Mangogram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
-          cd $REPO_NAME/Telegram
+          cd $REPO_NAME/Mangogram
 
           DEFINE=""
           if [ -n "${{ matrix.defines }}" ]; then
             DEFINE="-D ${{ matrix.defines }}=ON"
             echo Define from matrix: $DEFINE
-            echo "ARTIFACT_NAME=Telegram ${{ matrix.defines }}" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram ${{ matrix.defines }}" >> $GITHUB_ENV
           else
-            echo "ARTIFACT_NAME=Telegram" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram" >> $GITHUB_ENV
           fi
 
           ./configure.sh \
@@ -123,7 +123,7 @@ jobs:
         run: |
           cd $REPO_NAME/out/Debug
           mkdir artifact
-          mv Telegram.app artifact/
+          mv Mangogram.app artifact/
           mv Updater artifact/
       - uses: actions/upload-artifact@v7
         if: env.UPLOAD_ARTIFACT == 'true'

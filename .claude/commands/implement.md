@@ -35,9 +35,9 @@ Runs in the **current checkout** — wherever `/implement` is invoked. No worktr
 paths below are relative to that repository root.
 
 ```
-BUILD         = cmake --build ./out --config Debug --target Telegram
-EXE           = ./out/Debug/Telegram.exe
-TEST_ACCOUNT  = ./out/Debug/test_TelegramForcePortable   # user-prepared golden; launch gate aborts if absent
+BUILD         = cmake --build ./out --config Debug --target Mangogram
+EXE           = ./out/Debug/Mangogram.exe
+TEST_ACCOUNT  = ./out/Debug/test_MangogramForcePortable   # user-prepared golden; launch gate aborts if absent
 MAX_ATTEMPTS  = 4
 ```
 
@@ -49,7 +49,7 @@ hang. Key crash detection on the report file, not the exit code.
 
 Tasks run **sequentially** in this one checkout (the build cache stays warm; app runs must
 serialize against the account anyway). To parallelize, launch `/implement` in a different
-checkout/slot (e.g. `C:\Telegram\tdesktop`, `D:\Telegram\tdesktop`, `D:\Telegram\twin`) — each run
+checkout/slot (e.g. `C:\Mangogram\tdesktop`, `D:\Mangogram\tdesktop`, `D:\Mangogram\twin`) — each run
 is independent and single-tree. Don't run the **test phase** in two slots against the same account
 at once (concurrent clients on one auth key can trigger a session reset); give parallel slots
 separate test accounts.
@@ -78,8 +78,8 @@ first unfinished task.
 
 1. Record start time (`Get-Date`).
 2. **Test-account gate (hard precondition — before any work).** If
-   `out/Debug/test_TelegramForcePortable` does NOT exist, STOP the entire command immediately and
-   tell the user: the test account is not prepared — create `out/Debug/test_TelegramForcePortable`
+   `out/Debug/test_MangogramForcePortable` does NOT exist, STOP the entire command immediately and
+   tell the user: the test account is not prepared — create `out/Debug/test_MangogramForcePortable`
    (a portable-data folder authed to a throwaway test account) before `/implement` can run, because
    autonomous testing is impossible without it. Do no implementation work.
 3. **Resolve `$ARGUMENTS` into (project, SOURCE, mode) — without reading task files or images.**
@@ -120,7 +120,7 @@ first unfinished task.
 Spawn one planner subagent (Task, `general-purpose`):
 
 ```
-You are a planning/splitting agent for a large C++ codebase (Telegram Desktop).
+You are a planning/splitting agent for a large C++ codebase (Mangogram Desktop).
 
 SOURCE — EITHER an inline request OR a path to a task-list file. If it is a PATH, READ it yourself
 (and any task files it points to); the main thread has NOT read it. If it is inline text, use it as
@@ -245,7 +245,7 @@ For each task in `implementing.md` whose `Status` is not `approved`/`blocked`, i
    - **Hard stop ONLY when continuing is truly impossible** — the checkout is left broken /
      uncommitted / non-buildable (a later task-runner could not even start from a clean base), or a
      global environment failure blocks all work (file-lock build error needing the user to close
-     `Telegram.exe`; the test-account gate). Only then stop and report.
+     `Mangogram.exe`; the test-account gate). Only then stop and report.
    Before spawning the next task, confirm the working tree is clean and at a buildable commit
    (`git status` + the runner's summary). If a blocked runner left it dirty or broken, reset to the
    last known-good commit first; if you cannot recover a clean buildable base, that is the hard-stop
@@ -255,7 +255,7 @@ For each task in `implementing.md` whose `Status` is not `approved`/`blocked`, i
 ### task-runner prompt
 
 ```
-You are a task-runner for ONE task in an autonomous implement-and-test workflow on Telegram
+You are a task-runner for ONE task in an autonomous implement-and-test workflow on Mangogram
 Desktop (C++ / Qt). You own this task end to end and isolate its context from the orchestrator.
 You MAY and SHOULD spawn your own subagents (the Task tool is available to you).
 
@@ -370,7 +370,7 @@ When the loop ends (every task is `approved` or `blocked`):
   environment failure (file lock requiring user action, missing test account). Whatever the outcome, report
   every blocker's reason and `test.md` path LOUDLY in the Completion summary.
 - If `implementing.md` or any artifact is malformed, re-spawn that step with tighter instructions.
-- Never proceed past a file-lock build error — ask the user to close `Telegram.exe`.
+- Never proceed past a file-lock build error — ask the user to close `Mangogram.exe`.
 - The launch gate (Phase A) guarantees the test account exists before any work begins; if it is
   absent the command never starts.
 - Missing optional screenshots, mockups, or graphics are never an error or blocker.

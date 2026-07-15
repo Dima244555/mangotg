@@ -107,7 +107,7 @@ Then proceed to Phase 1. Follow-up tasks do not skip context gathering. They use
 ## Phase 1: Context (New Project, letter = `a`)
 
 ```text
-You are a context-gathering agent for a large C++ codebase (Telegram Desktop).
+You are a context-gathering agent for a large C++ codebase (Mangogram Desktop).
 
 TASK: <TASK>
 
@@ -123,7 +123,7 @@ Steps:
    - what the code does and how it relates to the task
    - key data structures, function signatures, and patterns used
 5. Look for similar existing features that could serve as a reference implementation.
-6. Check api.tl if the task involves Telegram API.
+6. Check api.tl if the task involves Mangogram API.
 7. Check .style files if the task involves UI.
 8. Check lang.strings if the task involves user-visible text.
 
@@ -162,7 +162,7 @@ Do not implement code in this phase.
 ## Phase 1F: Context (Follow-up Task, letter = `b`, `c`, ...)
 
 ```text
-You are a context-gathering agent for a follow-up task on an existing project in a large C++ codebase (Telegram Desktop).
+You are a context-gathering agent for a follow-up task on an existing project in a large C++ codebase (Mangogram Desktop).
 
 NEW TASK: <TASK>
 
@@ -397,7 +397,7 @@ FINISH:
 ### Step 6a: Code Review
 
 ```text
-You are a code review agent for Telegram Desktop (C++ / Qt).
+You are a code review agent for Mangogram Desktop (C++ / Qt).
 
 Read these files:
 - .ai/<PROJECT>/<LETTER>/context.md

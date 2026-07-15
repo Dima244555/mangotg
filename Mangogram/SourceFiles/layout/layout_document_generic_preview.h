@@ -1,0 +1,26 @@
+/*
+This file is part of Mangogram Desktop,
+the official desktop application for the Mangogram messaging service.
+
+For license and copyright information please follow this link:
+https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
+*/
+#pragma once
+
+namespace Layout {
+
+struct DocumentGenericPreview final {
+	static DocumentGenericPreview Create(DocumentData *document);
+	static DocumentGenericPreview Create(const QString &filename);
+	const style::icon *icon() const;
+	const int index;
+	const style::color &color;
+	const style::color &dark;
+	const style::color &over;
+	const style::color &selected;
+	const QString ext;
+};
+
+// Ui::CachedRoundCorners DocumentCorners(int colorIndex);
+
+} // namespace Layout

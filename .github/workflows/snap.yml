@@ -10,14 +10,14 @@ on:
       - 'LICENSE'
       - '.github/**'
       - '!.github/workflows/snap.yml'
-      - 'Telegram/build/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.bat'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.bat'
+      - 'Mangogram/Mangogram.plist'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -27,14 +27,14 @@ on:
       - 'LICENSE'
       - '.github/**'
       - '!.github/workflows/snap.yml'
-      - 'Telegram/build/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.bat'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.bat'
+      - 'Mangogram/Mangogram.plist'
 
 jobs:
 
@@ -67,13 +67,13 @@ jobs:
           enable-lvm-span: true
           lvm-span-mountpoint: /var/snap/lxd/common/lxd/storage-pools/default/containers
 
-      - name: Telegram Desktop snap build.
+      - name: Mangogram Desktop snap build.
         run: sudo -u $USER snap run snapcraft --verbosity=debug
 
       - name: Move artifact.
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
-          artifact_name=$(echo telegram-desktop_*.snap)
+          artifact_name=$(echo mangogram-desktop_*.snap)
           echo "ARTIFACT_NAME=$artifact_name" >> $GITHUB_ENV
 
           mkdir artifact

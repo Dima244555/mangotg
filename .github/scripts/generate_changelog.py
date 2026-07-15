@@ -255,9 +255,9 @@ footer a:hover {{ text-decoration: underline; }}
 
 <footer>
   Auto-generated from
-  <a href="https://github.com/telegramdesktop/tdesktop/blob/dev/changelog.txt">changelog.txt</a>.
+  <a href="https://github.com/mangogramdesktop/tdesktop/blob/dev/changelog.txt">changelog.txt</a>.
   Source code is published under
-  <a href="https://github.com/telegramdesktop/tdesktop">GPL v3</a>.
+  <a href="https://github.com/mangogramdesktop/tdesktop">GPL v3</a>.
 </footer>
 
 <script>
@@ -315,7 +315,7 @@ def main():
     out.write_text(html_content, encoding="utf-8")
 
     # Copy favicon files from resources
-    icons_src = repo / "Telegram" / "Resources" / "art"
+    icons_src = repo / "Mangogram" / "Resources" / "art"
     for name in ("icon16.png", "icon32.png"):
         icon = icons_src / name
         if icon.exists():

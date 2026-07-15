@@ -2,11 +2,11 @@
 Debug/
 Release/
 /ThirdParty/
-/Telegram/build/target
-/Telegram/tests/
-/Telegram/gyp/tests/*.test
-/Telegram/out/
-/Telegram/*.user
+/Mangogram/build/target
+/Mangogram/tests/
+/Mangogram/gyp/tests/*.test
+/Mangogram/out/
+/Mangogram/*.user
 *.vcxproj*
 *.sln
 *.suo
@@ -22,12 +22,12 @@ ipch/
 .cache/
 compile_commands.json
 
-/Telegram/log.txt
-/Telegram/data
-/Telegram/data_config
-/Telegram/DebugLogs/
-/Telegram/tdata/
-/Telegram/tdumps/
+/Mangogram/log.txt
+/Mangogram/data
+/Mangogram/data_config
+/Mangogram/DebugLogs/
+/Mangogram/tdata/
+/Mangogram/tdumps/
 
 .DS_Store
 ._*
@@ -45,11 +45,11 @@ stage
 /snap/gui/*.desktop
 /snap/plugins/__pycache__
 
-/Telegram/*.user.*
+/Mangogram/*.user.*
 *.txt.user
 *.pro.user
 /Linux/
-/Telegram/Makefile
+/Mangogram/Makefile
 *.*~
 .idea/
 cmake-build-debug/

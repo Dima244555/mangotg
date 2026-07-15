@@ -12,12 +12,12 @@ on:
       - '!.github/workflows/mac_packaged.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/configure.bat'
+      - 'Mangogram/build/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/configure.bat'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -29,12 +29,12 @@ on:
       - '!.github/workflows/mac_packaged.yml'
       - 'lib/xdg/**'
       - 'snap/**'
-      - 'Telegram/build/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/linux/**'
-      - 'Telegram/configure.bat'
+      - 'Mangogram/build/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/linux/**'
+      - 'Mangogram/configure.bat'
 
 jobs:
 
@@ -151,7 +151,7 @@ jobs:
           cmake --build build
           cmake --install build
 
-      - name: Telegram Desktop build.
+      - name: Mangogram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
           cd $REPO_NAME
@@ -161,22 +161,22 @@ jobs:
           if [ -n "${{ matrix.defines }}" ]; then
             DEFINE="-D ${{ matrix.defines }}=ON"
             echo Define from matrix: $DEFINE
-            echo "ARTIFACT_NAME=Telegram ${{ matrix.defines }}" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram ${{ matrix.defines }}" >> $GITHUB_ENV
           else
-            echo "ARTIFACT_NAME=Telegram" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram" >> $GITHUB_ENV
           fi
 
           cmake -Bbuild . -DTDESKTOP_API_TEST=ON $DEFINE
           cmake --build build
-          macdeployqt build/Telegram.app
-          codesign --remove-signature build/Telegram.app
+          macdeployqt build/Mangogram.app
+          codesign --remove-signature build/Mangogram.app
 
       - name: Move artifact.
         if: env.UPLOAD_ARTIFACT == 'true'
         run: |
           cd $REPO_NAME/build
           mkdir artifact
-          mv Telegram.app artifact/
+          mv Mangogram.app artifact/
       - uses: actions/upload-artifact@v7
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.

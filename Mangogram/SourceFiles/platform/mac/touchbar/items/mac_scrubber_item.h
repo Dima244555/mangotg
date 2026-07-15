@@ -1,0 +1,21 @@
+/*
+This file is part of Mangogram Desktop,
+the official desktop application for the Mangogram messaging service.
+
+For license and copyright information please follow this link:
+https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
+*/
+#pragma once
+
+#import <AppKit/NSPopoverTouchBarItem.h>
+#import <AppKit/NSTouchBar.h>
+
+namespace Window {
+class Controller;
+} // namespace Window
+
+API_AVAILABLE(macos(10.12.2))
+@interface StickerEmojiPopover : NSPopoverTouchBarItem<NSTouchBarDelegate>
+- (id)init:(not_null<Window::Controller*>)controller
+	identifier:(NSTouchBarItemIdentifier)identifier;
+@end

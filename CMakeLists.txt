@@ -1,8 +1,8 @@
-# This file is part of Telegram Desktop,
-# the official desktop application for the Telegram messaging service.
+# This file is part of Mangogram Desktop,
+# the official desktop application for the Mangogram messaging service.
 #
 # For license and copyright information please follow this link:
-# https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+# https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 
 cmake_minimum_required(VERSION 3.25...3.31)
 
@@ -10,17 +10,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 include(cmake/validate_special_target.cmake)
 include(cmake/version.cmake)
-desktop_app_parse_version(Telegram/build/version)
+desktop_app_parse_version(Mangogram/build/version)
 
 if (NOT DEFINED CMAKE_CONFIGURATION_TYPES)
     set(configuration_types_init 1)
 endif()
 
-project(Telegram
+project(Mangogram
     LANGUAGES C CXX
     VERSION ${desktop_app_version_cmake}
-    DESCRIPTION "Official Telegram Desktop messenger"
-    HOMEPAGE_URL "https://desktop.telegram.org"
+    DESCRIPTION "Official Mangogram Desktop messenger"
+    HOMEPAGE_URL "https://desktop.mangogram.org"
 )
 
 if (APPLE)
@@ -33,10 +33,10 @@ if (configuration_types_init
     set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES};MinSizeRel" CACHE STRING "" FORCE)
 endif()
 
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Telegram)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Mangogram)
 
-get_filename_component(third_party_loc "Telegram/ThirdParty" REALPATH)
-get_filename_component(submodules_loc "Telegram" REALPATH)
+get_filename_component(third_party_loc "Mangogram/ThirdParty" REALPATH)
+get_filename_component(submodules_loc "Mangogram" REALPATH)
 get_filename_component(cmake_helpers_loc "cmake" REALPATH)
 
 if (NOT DESKTOP_APP_USE_PACKAGED AND WIN32)
@@ -63,4 +63,4 @@ set(desktop_app_skip_libs
 )
 
 add_subdirectory(cmake)
-add_subdirectory(Telegram)
+add_subdirectory(Mangogram)

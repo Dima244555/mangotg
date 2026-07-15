@@ -1,6 +1,6 @@
 ---
 name: task-think
-description: Orchestrate a multi-phase Telegram Desktop implementation workflow with persistent per-project task artifacts under .ai. Use when Codex should drive context gathering, planning, plan assessment, implementation, Debug build verification, review, and native-Windows text normalization through bounded phase handoffs while keeping the parent task lean. Uses current spawn_agent, wait_agent, send_message, followup_task, and interrupt_agent semantics.
+description: Orchestrate a multi-phase Mangogram Desktop implementation workflow with persistent per-project task artifacts under .ai. Use when Codex should drive context gathering, planning, plan assessment, implementation, Debug build verification, review, and native-Windows text normalization through bounded phase handoffs while keeping the parent task lean. Uses current spawn_agent, wait_agent, send_message, followup_task, and interrupt_agent semantics.
 ---
 
 # Task Pipeline

@@ -5,7 +5,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Agent, AskUserQuestion, Todo
 
 # Icon - SVG Icon Generation from Design Mockup
 
-You generate production-quality SVG icons for Telegram Desktop by vectorizing design mockup screenshots using the vectosolve MCP service, then post-processing the result to match the Telegram icon format.
+You generate production-quality SVG icons for Mangogram Desktop by vectorizing design mockup screenshots using the vectosolve MCP service, then post-processing the result to match the Mangogram icon format.
 
 **Arguments:** `$ARGUMENTS` = "$ARGUMENTS"
 
@@ -77,7 +77,7 @@ Run these TWO commands using the Bash tool, **IN PARALLEL**:
 
 2. Choose an icon file name:
    - Lowercase letters and underscores only — **NO hyphens**
-   - Match existing naming conventions (check `Telegram/Resources/icons/{subfolder}/`)
+   - Match existing naming conventions (check `Mangogram/Resources/icons/{subfolder}/`)
    - Must NOT conflict with existing icons
    - Must NOT collide with existing `.ai/icon_{name}/` directories
 
@@ -87,7 +87,7 @@ Run these TWO commands using the Bash tool, **IN PARALLEL**:
    ```
    ## Icon: {icon_name}
    Type: {menu/other}
-   Target: Telegram/Resources/icons/{subfolder}/{icon_name}.svg
+   Target: Mangogram/Resources/icons/{subfolder}/{icon_name}.svg
 
    ## Original Request
    {full $ARGUMENTS text}
@@ -127,9 +127,9 @@ Locate the render tool (`codegen_style` with `--render-svg` mode):
 
 ```bash
 if [[ "$OSTYPE" == darwin* ]]; then
-    ls out/Telegram/codegen/codegen/style/Debug/codegen_style
+    ls out/Mangogram/codegen/codegen/style/Debug/codegen_style
 else
-    ls out/Telegram/codegen/codegen/style/Debug/codegen_style.exe
+    ls out/Mangogram/codegen/codegen/style/Debug/codegen_style.exe
 fi
 ```
 
@@ -137,8 +137,8 @@ If missing, build it: `cmake --build out --config Debug --target codegen_style`
 
 Test on a known good SVG (use the appropriate binary path for the OS):
 ```bash
-CODEGEN=$(if [[ "$OSTYPE" == darwin* ]]; then echo out/Telegram/codegen/codegen/style/Debug/codegen_style; else echo out/Telegram/codegen/codegen/style/Debug/codegen_style.exe; fi)
-$CODEGEN --render-svg Telegram/Resources/icons/menu/tag_add.svg .ai/icon_{name}/test_render.png 512
+CODEGEN=$(if [[ "$OSTYPE" == darwin* ]]; then echo out/Mangogram/codegen/codegen/style/Debug/codegen_style; else echo out/Mangogram/codegen/codegen/style/Debug/codegen_style.exe; fi)
+$CODEGEN --render-svg Mangogram/Resources/icons/menu/tag_add.svg .ai/icon_{name}/test_render.png 512
 ```
 
 If works → delete test render, set `RENDER_AVAILABLE = true`. If fails → `RENDER_AVAILABLE = false`.
@@ -267,7 +267,7 @@ If the result is poor (vectosolve couldn't handle the input well) → report to 
 
 1. Read the `Target:` line from `.ai/icon_{name}/context.md` to get the output path.
 
-2. Copy the final SVG to that target path (e.g., `Telegram/Resources/icons/menu/{icon_name}.svg`).
+2. Copy the final SVG to that target path (e.g., `Mangogram/Resources/icons/menu/{icon_name}.svg`).
 
 3. Update `.ai/icon_{name}/context.md` — append to the end:
    ```

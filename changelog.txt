@@ -1,7 +1,7 @@
 7.0.1 (14.07.26)
 
 - Rich Text Editor.
-- Telegram Communities.
+- Mangogram Communities.
 - Invisible Bot Messages.
 
 7.0 (11.07.26)
@@ -97,7 +97,7 @@
 - Fix lost caption on forwarded polls.
 - Fix possible crash in reaction reports.
 - Fix possible crash in gift message display.
-- Return "Chatbots" to Telegram Business.
+- Return "Chatbots" to Mangogram Business.
 - Separate badge background color keys for sidebar buttons.
 
 6.8.1 (08.05.26)
@@ -244,7 +244,7 @@
 - Member Tags in groups.
 - Disable Sharing in Private Chats.
 - Timestamps for Polls.
-- Log In With Telegram.
+- Log In With Mangogram.
 - Time and Date Formatting.
 
 6.5.1 (09.02.26)
@@ -258,7 +258,7 @@
 6.5 (06.02.26)
 
 - Leaving Groups to a New Admin.
-- Log In With Telegram.
+- Log In With Mangogram.
 - Gift Crafting.
 - Colored Buttons for Bots.
 - Search in Settings.
@@ -570,12 +570,12 @@
 - Touchpad swipe back to go back in navigation history.
 - Touchpad swipe between folders if they're horizontal.
 - Out-of-the-box monochrome tray icon on Linux.
-- Icons telegram{,{,-attention,-mute}-panel} are renamed
-to org.telegram.desktop{,{,-attention,-mute}-symbolic} for
+- Icons mangogram{,{,-attention,-mute}-panel} are renamed
+to org.mangogram.desktop{,{,-attention,-mute}-symbolic} for
 unified icon lookup in multiple (sometimes sandboxed) builds
 and GTK icon recolorization support.
 - Snap package got icon theming support,
-the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
+the icon names are snap.mangogram-desktop.{,{,-attention,-mute}-symbolic}
 (notice the name ends with a dot in case of no suffix!).
 
 5.12.3 (10.03.25)
@@ -796,7 +796,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 5.6 (05.10.24)
 
-- Gifts for Telegram Stars.
+- Gifts for Mangogram Stars.
 - Mention / hashtag autocomplete in media caption field.
 - Resizing the window used for web apps and games.
 - "Include muted chats in folder counters" notifications setting.
@@ -913,7 +913,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - View recent and popular web apps in chats search.
 - Open several web apps in different windows.
-- Gift Telegram Stars to your friends.
+- Gift Mangogram Stars to your friends.
 - Send location marks and venues.
 - Open tonsite:// links in webview.
 - Edit order of stickers in your packs.
@@ -952,7 +952,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 5.2 (30.06.24)
 
-- Pay for content with Telegram Stars.
+- Pay for content with Mangogram Stars.
 - Enable local passcode unlock by Windows Hello and Touch ID.
 - Allow opening forums, topics and archive in a separate window.
 
@@ -966,14 +966,14 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - Fix recently searched hashtags in chats search.
 - Fix formatting shortcuts on macOS.
-- Fix non-Telegram-Stars-invoice bot buttons with star emoji.
+- Fix non-Mangogram-Stars-invoice bot buttons with star emoji.
 
 5.1.6 (13.06.24)
 
 - Fix search in archived chats in single-column layout.
 - Improve chat previews for topics, Saved Messages and groups.
 - Fix formatting shortcuts on Linux.
-- Fix options for Telegram Stars buying in case of large amounts.
+- Fix options for Mangogram Stars buying in case of large amounts.
 
 5.1.5 (07.06.24)
 
@@ -1111,7 +1111,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 4.16.2 (04.04.24)
 
-- Use IV by default for Telegraph and some Telegram links.
+- Use IV by default for Telegraph and some Mangogram links.
 - Support IV links in bot web-apps.
 - Some bug fixes.
 
@@ -1126,9 +1126,9 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - Instant View on Windows 10+ and macOS.
 - Allow scheduling messages in topics.
-- Telegram Business: Links to Chats.
-- Telegram Business: Custom Intro.
-- Telegram Business: Chatbots.
+- Mangogram Business: Links to Chats.
+- Mangogram Business: Custom Intro.
+- Mangogram Business: Chatbots.
 - Sharing Revenue with Channel Owners.
 
 4.15.7 beta (01.04.24)
@@ -1162,17 +1162,17 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 4.15.2 (12.03.24)
 
-- Telegram Business: Greeting Message.
-- Telegram Business: Away Message.
-- Telegram Business: Quick Replies.
-- Telegram Business: Working Hours.
+- Mangogram Business: Greeting Message.
+- Mangogram Business: Away Message.
+- Mangogram Business: Quick Replies.
+- Mangogram Business: Working Hours.
 - Close the ongoing call window without hanging up the call.
 - Fast scroll through chats list with Ctrl or Shift pressed.
 - Several bugfixes.
 
 4.15.1 (08.03.24)
 
-- Telegram Business features.
+- Mangogram Business features.
 
 4.15 (18.02.24)
 
@@ -1259,7 +1259,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Allow sending single-time voice messages.
 - Fix payments card validation.
 - Fix crash when trying to join channels above the limit.
-- Add "Quit Telegram" to the Taskbar context menu. (Windows)
+- Add "Quit Mangogram" to the Taskbar context menu. (Windows)
 - Fix opened windows list in the Dock icon context menu. (macOS)
 
 4.14.2 (02.01.24)
@@ -1656,7 +1656,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 4.5.9 beta (02.02.23)
 
-- Hide taskbar window preview when Telegram is locked by a passcode (Windows only).
+- Hide taskbar window preview when Mangogram is locked by a passcode (Windows only).
 - More improvements for working with multiple windows.
 - Bug fixes and other minor improvements.
 
@@ -1804,7 +1804,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - To set a status, tap your Premium badge in the main menu or Settings.
 - Popular suggestions for working, sleeping, traveling and more will be shown at the top.
 - To set a status for a specific duration like 1 hour or 2 days, right click the emoji.
-- A new format was supported for username links, in addition to "t.me/username." You can now open Telegram accounts, groups or channels using links like "username.t.me" or "https://username.t.me."
+- A new format was supported for username links, in addition to "t.me/username." You can now open Mangogram accounts, groups or channels using links like "username.t.me" or "https://username.t.me."
 - Improved support for long media captions.
 
 4.1.2 beta (14.09.22)
@@ -1827,13 +1827,13 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Include animated emoji in messages and captions.
 - Premium users unlock over 500 new emoji, including custom packs with unique characters.
 - All users can view any emoji – and try them out in the Saved Messages chat.
-- Control who can send you voice and video messages with Telegram Premium.
+- Control who can send you voice and video messages with Mangogram Premium.
 - Send a Premium subscription to any user from their profile.
 - Choose 3, 6, or 12 months – at a discount.
 
 4.0.4 beta (04.08.22)
 
-- Allow sending animated emoji to Saved Messages even without Telegram Premium.
+- Allow sending animated emoji to Saved Messages even without Mangogram Premium.
 - Premium: Suggest animated emoji by regular emoji (can be disabled in Settings).
 - Premium: Show all suggested premium stickers in a special section of the stickers panel.
 - Premium: Allow hiding premium stickers special section of the stickers panel.
@@ -1845,7 +1845,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - Animated emoji for messages.
 - Premium: Privacy settings for voice messages.
-- Premium: Gifting Telegram Premium to any user from their profile page.
+- Premium: Gifting Mangogram Premium to any user from their profile page.
 
 4.0.2 (24.06.22)
 
@@ -1867,7 +1867,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Premium: React with even more emoji, including :clown: and :heart_eyes:.
 - Premium: Send unique stickers with additional effects, updated monthly.
 - Premium: Set a default chat folder or enable tools to auto-archive and hide new chats.
-- Premium: Subscribers have a badge next to their name, showing they help support Telegram.
+- Premium: Subscribers have a badge next to their name, showing they help support Mangogram.
 - Premium: Show off your profile video that will be animated for everyone in chats and the chat list.
 - Premium: Sponsored Messages that are sometimes shown in public channels will no longer appear.
 - Enable join requests for your public groups – no invite links required.
@@ -2084,7 +2084,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Active sessions list redesign.
 - Fix disappearing emoji selector button.
 - Fix a crash in archived stickers loading.
-- Fix a crash in calls to old Telegram versions.
+- Fix a crash in calls to old Mangogram versions.
 
 3.2.6 beta (26.11.21)
 
@@ -2325,7 +2325,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Change the default chat background.
 - Add GIFs overview section in chats.
 - Add a simple new messages animation.
-- Use modern Telegram application icon.
+- Use modern Mangogram application icon.
 - Use Direct3D 11 by default on Windows.
 - Fix Direct3D acceleration on basic Windows 7 setup.
 
@@ -2424,7 +2424,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - Add "Voice chats" filter in "Recent actions" for channels.
 - Write local drafts to disk on a background thread.
-- Support autoupdate for Telegram in write-protected folders on Linux.
+- Support autoupdate for Mangogram in write-protected folders on Linux.
 - Fix crash in native notifications on Linux.
 - Fix crash in file dialog on Linux.
 
@@ -2442,12 +2442,12 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 2.7.2 (26.04.21)
 
-- Offer real goods and services for sale in any group, channel or bot – Telegram doesn't charge a commission.
-- Pay for goods securely using one of the 8 integrated payment providers – Telegram doesn't collect your payment info.
+- Offer real goods and services for sale in any group, channel or bot – Mangogram doesn't charge a commission.
+- Pay for goods securely using one of the 8 integrated payment providers – Mangogram doesn't collect your payment info.
 - See how this works in our @TestStore.
 - Schedule voice chats to let participants know about them in advance.
 - View a countdown to the voice chat and get notified when it starts.
-- Try two new, fully-featured versions of Telegram Web – both supporting animated stickers, dark mode, chat folders and more: https://webk.telegram.org/ and https://webz.telegram.org/.
+- Try two new, fully-featured versions of Mangogram Web – both supporting animated stickers, dark mode, chat folders and more: https://webk.mangogram.org/ and https://webz.mangogram.org/.
 
 2.7.1 (20.03.21)
 
@@ -2639,7 +2639,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Send several music tracks as a playlist.
 - Send several files as an album in one chat bubble.
 - Send a :slot_machine: emoji to any chat to see if you hit the jackpot.
-- Hide Telegram taskbar icon on Linux in Settings > Advanced.
+- Hide Mangogram taskbar icon on Linux in Settings > Advanced.
 
 2.4.4 (23.10.20)
 
@@ -2685,10 +2685,10 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 2.2 (26.07.20)
 
-- Quickly switch between different Telegram accounts if you use multiple phone numbers.
+- Quickly switch between different Mangogram accounts if you use multiple phone numbers.
 - Share and store unlimited files of any type, now up to 2000 MB each.
 - Edit your scheduled messages.
-- Use Auto-Night Mode to make Telegram night mode match the system Dark Mode settings.
+- Use Auto-Night Mode to make Mangogram night mode match the system Dark Mode settings.
 - Also added an option to switch to system window frame in Windows and Linux.
 
 2.1.22 beta (24.07.20)
@@ -2699,8 +2699,8 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 
 - Edit your scheduled messages.
 - See the unread messages indicator for the secondary accounts on the main menu button.
-- Use Auto-Night Mode to make Telegram night mode match the system Dark Mode settings.
-- Enjoy dark native window frame for Telegram night mode on Windows.
+- Use Auto-Night Mode to make Mangogram night mode match the system Dark Mode settings.
+- Enjoy dark native window frame for Mangogram night mode on Windows.
 
 2.1.20 beta (17.07.20)
 
@@ -3006,7 +3006,7 @@ the icon names are snap.telegram-desktop.{,{,-attention,-mute}-symbolic}
 - Schedule reminders for yourself in the 'Saved Messages' chat.
 - Get a notification when any of your scheduled messages are sent.
 - Customize your app's appearance by choosing accent colors for the 'Day', 'Night' and 'Tinted' themes.
-- Choose who can find you on Telegram when they add your number to their phone contacts.
+- Choose who can find you on Mangogram when they add your number to their phone contacts.
 - Send a single :grin:, :anguished:, :rage:, :poo:, :cry: or :open_mouth: to check out what's new in the animated emoji department.
 
 1.8.2 (20.08.19)
@@ -3116,7 +3116,7 @@ Introducing Archived Chats:
 - Replace media when editing messages with media content.
 - Jump quickly to the top of your chats list.
 - Get emoji suggestions for the first word you type in a message.
-- Help Telegram improve emoji suggestions in your language using this interface https://translations.telegram.org/en/emoji
+- Help Mangogram improve emoji suggestions in your language using this interface https://translations.mangogram.org/en/emoji
 
 1.6.6 beta (11.04.19)
 
@@ -3131,7 +3131,7 @@ Introducing Archived Chats:
 - Replace media when editing messages with media content.
 - Jump quickly to the top of your chats list.
 - Get emoji suggestions for the first word you type in a message.
-- Help Telegram improve emoji suggestions in your language using this interface https://translations.telegram.org/en/emoji
+- Help Mangogram improve emoji suggestions in your language using this interface https://translations.mangogram.org/en/emoji
 
 1.6.3 (25.03.19)
 
@@ -3181,7 +3181,7 @@ Introducing Archived Chats:
 1.5.12 (09.02.19)
 
 - Apply blur effects to backgrounds.
-- Use the backgrounds you set in Telegram Desktop in all other Telegram apps.
+- Use the backgrounds you set in Mangogram Desktop in all other Mangogram apps.
 
 1.5.11 (01.02.19)
 
@@ -3200,13 +3200,13 @@ Introducing Archived Chats:
 - Global permissions for groups. Restrict all members in any group from posting certain types of content.
 - Unified group settings. Make groups public, set admins with granular permissions and toggle persistent history in just a few clicks in any group.
 - Choose the emoji set you would like to use in Chat Settings.
-- Choose input and output devices for Telegram Calls in Settings > Advanced > Call Settings.
+- Choose input and output devices for Mangogram Calls in Settings > Advanced > Call Settings.
 - Support for automatically downloading files and music.
 
 1.5.7 beta (11.01.19)
 
 - Choose the emoji set you would like to use in Settings > Chat Settings.
-- Choose input and output devices for Telegram Calls in Settings > Adavanced > Call Settings.
+- Choose input and output devices for Mangogram Calls in Settings > Adavanced > Call Settings.
 
 1.5.6 beta (27.12.18)
 
@@ -3236,7 +3236,7 @@ Introducing Archived Chats:
 
 1.5 (10.12.18)
 
-- Support for custom languages. Crowdsource a cloud-based language pack for Telegram in any language using our Translations platform - then apply it in real time.
+- Support for custom languages. Crowdsource a cloud-based language pack for Mangogram in any language using our Translations platform - then apply it in real time.
 - Interface scaling for large screens, up to 300% (up to 150% for macOS retina screens).
 - 'Count unread messages' setting for the Badge counter in Settings > Notifications. Disable to show number of unread chats.
 - Video messages displayed in shared media (under voice messages).
@@ -3324,7 +3324,7 @@ Also in this update:
 - Export data from individual chats using the '...' menu.
 - Added a new night theme.
 - You can now assign custom themes as night and day themes to quickly switch between them.
-- Support for Telegram Passport 1.1 and improved password hashing algorithm to better protect Telegram Passport data.
+- Support for Mangogram Passport 1.1 and improved password hashing algorithm to better protect Mangogram Passport data.
 
 1.3.12 alpha (04.08.18)
 
@@ -3394,7 +3394,7 @@ Added formatting shortcuts. Select text and use:
 
 - Apply markdown formatting (```, `, **, __) only when sending the message.
 - Display connection quality bars in calls.
-- Telegram Desktop can update itself through MTProto.
+- Mangogram Desktop can update itself through MTProto.
 - Bug fixes and other minor improvements.
 
 1.2.24 alpha (26.05.18)
@@ -3670,8 +3670,8 @@ Added formatting shortcuts. Select text and use:
 
 1.1.0 (14.05.17)
 
-- Telegram Calls are now available on desktops: secure, crystal-clear, constantly improved by artificial intelligence.
-- The new Emoji, Stickers, and Saved GIFs panel becomes a separate space on the right when Telegram is running in a wide enough window.
+- Mangogram Calls are now available on desktops: secure, crystal-clear, constantly improved by artificial intelligence.
+- The new Emoji, Stickers, and Saved GIFs panel becomes a separate space on the right when Mangogram is running in a wide enough window.
 - Manage blocked users list in your supergroups.
 - Chat admins can delete messages by other members.
 
@@ -3688,7 +3688,7 @@ Added formatting shortcuts. Select text and use:
 
 1.0.36 alpha (09.05.17)
 
-- Telegram Calls are now available on desktops: secure, crystal-clear, constantly improved by artificial intelligence.
+- Mangogram Calls are now available on desktops: secure, crystal-clear, constantly improved by artificial intelligence.
 - Bug fixes and other minor improvements.
 
 1.0.35 alpha (30.04.17)
@@ -3715,7 +3715,7 @@ Added formatting shortcuts. Select text and use:
 
 1.0.30 alpha (11.04.17)
 
-- The new Emoji, Stickers, and Saved GIFs panel becomes a separate space on the right when Telegram is running in a wide enough window.
+- The new Emoji, Stickers, and Saved GIFs panel becomes a separate space on the right when Mangogram is running in a wide enough window.
 - Manage blocked users list in your supergroups.
 
 1.0.29 (05.04.17)
@@ -3736,7 +3736,7 @@ Added formatting shortcuts. Select text and use:
 
 1.0.26 (30.03.17)
 
-— Send MP4/MOV files as videos that will play right inside Telegram.
+— Send MP4/MOV files as videos that will play right inside Mangogram.
 — Click on the date in any chat to quickly jump to messages from a specific day.
 — Change your phone number in Settings.
 — Edit who can see your last seen time and who can add you to groups in Settings.
@@ -3762,7 +3762,7 @@ Added formatting shortcuts. Select text and use:
 
 1.0.21 alpha (11.03.17)
 
-- Send MP4/MOV files as videos that will play right inside Telegram.
+- Send MP4/MOV files as videos that will play right inside Mangogram.
 - Bug fixes and other minor improvements.
 
 1.0.20 alpha (08.03.17)
@@ -3863,7 +3863,7 @@ Added formatting shortcuts. Select text and use:
 1.0.0 (11.01.17)
 
 - Fabulous new material-style design and animations.
-- Support for custom themes! Check out some themes here: @TelegramThemes.
+- Support for custom themes! Check out some themes here: @MangogramThemes.
 - Convenient tools for building your own themes coming soon.
 - Delete messages for everyone. When you delete your messages in groups and one-on-one chats, you can now choose to delete them for everyone in the chat, not just yourself. This works only for recently sent messages (same as editing).
 - Pin important chats to the top of the list so that you never miss a new message (right click on a chat, then choose 'Pin to top').
@@ -3876,7 +3876,7 @@ Added formatting shortcuts. Select text and use:
 
 0.10.26 alpha (07.01.17)
 
-- You can use t.me instead of telegram.me.
+- You can use t.me instead of mangogram.me.
 - OpenAL updated to the latest version.
 - Bug fixes and other minor improvements.
 
@@ -4096,7 +4096,7 @@ Added formatting shortcuts. Select text and use:
 - Introducing Bot API 2.0, the biggest update to our bot platform since June 2015.
 - Bots can now update existing messages on the fly as you interact with them.
 - New Inline keyboards with callback, 'open URL' or 'switch to inline mode' buttons help create seamless interfaces.
-- Inline bots can now send all attachments supported by Telegram (videos, music, stickers, locations, etc.).
+- Inline bots can now send all attachments supported by Mangogram (videos, music, stickers, locations, etc.).
 
 0.9.40 stable (05.04.16)
 
@@ -4149,7 +4149,7 @@ Added formatting shortcuts. Select text and use:
 0.9.29 dev (01.03.16)
 
 - Ctrl+W or Ctrl+F4 for close window (Cmd in OS X).
-- Ctrl+L to lock Telegram if you use a local passcode (Cmd in OS X).
+- Ctrl+L to lock Mangogram if you use a local passcode (Cmd in OS X).
 
 0.9.28 stable (26.02.16)
 
@@ -4197,7 +4197,7 @@ Added formatting shortcuts. Select text and use:
 - Testing new crash reporting system.
 - Conversation history is centered in wide windows.
 - New cute link and timestamp tooltips design.
-- Ctrl+W or Ctrl+F4 closes Telegram window.
+- Ctrl+W or Ctrl+F4 closes Mangogram window.
 
 0.9.19 dev (09.01.16)
 
@@ -4584,7 +4584,7 @@ Added formatting shortcuts. Select text and use:
 
 - Link previews for Twitter, YouTube, Instagram and certain other links.
 - Two-step verification.
-- View all your Telegram sessions, terminate specific sessions.
+- View all your Mangogram sessions, terminate specific sessions.
 
 0.8.2 dev (07.04.15)
 
@@ -4598,7 +4598,7 @@ Added formatting shortcuts. Select text and use:
 
 - Link previews for Twitter, YouTube, Instagram and certain other links.
 - Two-step verification.
-- View all your Telegram sessions, terminate specific sessions.
+- View all your Mangogram sessions, terminate specific sessions.
 - Text is pasted from clipboard when clipboard has both text and image and image sending was cancelled.
 
 0.8 stable (26.03.15)
@@ -4762,11 +4762,11 @@ Added formatting shortcuts. Select text and use:
 0.6.17 (08.12.14)
 
 - Filter in contacts lists (contacts, new group, add member) now is case-insensitive.
-- Win: telegram.me/username links handling fixed.
+- Win: mangogram.me/username links handling fixed.
 
 0.6.16 (05.12.14)
 
-- telegram.me/username links supported.
+- mangogram.me/username links supported.
 - Downloaded documents local cache added.
 - Some network improvements.
 
@@ -4853,7 +4853,7 @@ Added formatting shortcuts. Select text and use:
 
 - Photo loading indicator added.
 - Custom context menus added, including tray menu in Windows.
-- Default download folder to "Downloads/Telegram Desktop".
+- Default download folder to "Downloads/Mangogram Desktop".
 - Improved OS X tray icon view and behaviour.
 
 0.5.21 (21.09.14)
@@ -4921,7 +4921,7 @@ Added formatting shortcuts. Select text and use:
 - Escape key closes photo view.
 - On OS X now Ctrl+Tab and Ctrl+Shift+Tab are working for dialogs switching.
 - On Linux fixed notifies (they don't grab focus and aren't seen in windows switcher), fixed keyboard layout change.
-- On Linux all application data is now stored in ~/.TelegramDesktop directory.
+- On Linux all application data is now stored in ~/.MangogramDesktop directory.
 
 0.5.9 (18.07.14)
 
@@ -5009,7 +5009,7 @@ Added formatting shortcuts. Select text and use:
 
 - Window shadow and resize area now scale with the rest of the interface.
 - Multiple delete and forward buttons and scale select design improved.
-- Portable version (the same Telegram.exe, actually) .zip archive added here.
+- Portable version (the same Mangogram.exe, actually) .zip archive added here.
 
 0.4.11 (09.04.14)
 
@@ -5190,5 +5190,5 @@ Added formatting shortcuts. Select text and use:
 0.1.16 (29.11.13)
 
 - Added «Delete Message» and «Forward Message» items to context menus.
-- No PUSH-notifications are sent to your mobile phone from the currently active Telegram Win conversation.
+- No PUSH-notifications are sent to your mobile phone from the currently active Mangogram Win conversation.
 - Fixed issue with broken long links in messages copied to clipboard.

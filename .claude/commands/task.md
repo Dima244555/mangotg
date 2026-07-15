@@ -78,7 +78,7 @@ Then proceed to Phase 1 (Context Gathering) in both cases. Follow-up tasks do NO
 Spawn an agent (Task tool, subagent_type=`general-purpose`) with this prompt structure:
 
 ```
-You are a context-gathering agent for a large C++ codebase (Telegram Desktop).
+You are a context-gathering agent for a large C++ codebase (Mangogram Desktop).
 
 TASK: <paste the user's task description here>
 
@@ -94,7 +94,7 @@ Steps:
    - What the code does and how it relates to the task
    - Key data structures, function signatures, patterns used
 5. Look for similar existing features that could serve as a reference implementation.
-6. Check api.tl if the task involves Telegram API.
+6. Check api.tl if the task involves Mangogram API.
 7. Check .style files if the task involves UI.
 8. Check lang.strings if the task involves user-visible text.
 
@@ -135,7 +135,7 @@ After this agent completes, read both `about.md` and `a/context.md` to verify th
 Spawn an agent (Task tool, subagent_type=`general-purpose`) with this prompt structure:
 
 ```
-You are a context-gathering agent for a follow-up task on an existing project in a large C++ codebase (Telegram Desktop).
+You are a context-gathering agent for a follow-up task on an existing project in a large C++ codebase (Mangogram Desktop).
 
 NEW TASK: <paste the follow-up task description here>
 
@@ -334,7 +334,7 @@ Read these files:
 The implementation is complete. Your job is to build the project and fix any build errors.
 
 Steps:
-1. Run (from repository root): cmake --build ./out --config Debug --target Telegram
+1. Run (from repository root): cmake --build ./out --config Debug --target Mangogram
 2. If the build succeeds, update plan.md: change `- [ ] Build verification` to `- [x] Build verification`
 3. If the build fails:
    a. Read the error messages carefully
@@ -380,7 +380,7 @@ FINISH:
 Spawn an agent (Task tool, subagent_type=`general-purpose`):
 
 ```
-You are a code review agent for Telegram Desktop (C++ / Qt).
+You are a code review agent for Mangogram Desktop (C++ / Qt).
 
 Read these files:
 - .ai/<project-name>/<letter>/context.md - Codebase context
@@ -474,7 +474,7 @@ For each issue in the review:
 3. Verify the change makes sense in context.
 
 After all changes are made:
-1. Build (from repository root): cmake --build ./out --config Debug --target Telegram
+1. Build (from repository root): cmake --build ./out --config Debug --target Mangogram
 2. If the build fails, fix build errors and rebuild until it passes.
 3. If build fails with file-locked errors (C1041, LNK1104), STOP and report - do not retry.
 

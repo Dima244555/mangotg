@@ -53,7 +53,7 @@ Treat Computer Use as available for a run only when all of these are true:
 1. The parent passed the active Computer Use `SKILL.md` path from its surfaced Skills catalog.
 2. That skill supports the current desktop host and its prescribed runtime tool is callable here.
 3. Required OS permissions and target-app approval are already satisfied without a fresh prompt.
-4. The running test build can be distinguished unambiguously from every real Telegram instance.
+4. The running test build can be distinguished unambiguously from every real Mangogram instance.
 
 Read the passed Computer Use skill completely before the first action and follow its current
 bootstrap, API, state-refresh, screenshot, and confirmation rules. Do not hardcode a plugin cache
@@ -84,7 +84,7 @@ Keep process and account ownership in the ordinary runner:
    same tuple immediately after every state or action call; reject a disappearance or replacement.
 4. Pass `COMPUTER_USE_APP_TARGET` to the active API. If it cannot accept that full target, treat the
    driver as unavailable unless the API exposes evidence that another identifier resolves to the
-   recorded process. Never target the ambiguous display name `Telegram` or a user's release client.
+   recorded process. Never target the ambiguous display name `Mangogram` or a user's release client.
 5. If exact identity cannot be proven, perform no state/action call and mark Computer Use unavailable.
    In `auto`, run the prewritten overlay fallback; in `required`, return `BLOCKED(test)`. Never risk
    the user's real account.
@@ -137,7 +137,7 @@ that cannot preserve the behavior under test, return `BLOCKED(test)` with a prec
 do not pause an unattended pipeline waiting for approval and do not treat the invocation as blanket
 permission.
 
-Screenshots and AX text can contain everything visible in Telegram. Keep unrelated sensitive apps
+Screenshots and AX text can contain everything visible in Mangogram. Keep unrelated sensitive apps
 closed, capture only the test window/target, and never expose a real account merely to obtain context.
 
 ## Unavailable result mapping

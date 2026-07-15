@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Autonomously implement and verify Telegram Desktop changes from an inline request, task-list path, or a prepared project task source under .ai, with or without mockups. Use when Codex should split work into independently testable tasks and drive each through context, planning, implementation, a Debug build, one review pass, artifact-grounded in-app testing with optional Computer Use, resumable artifacts, a lean parent task, and native-Windows CRLF normalization.
+description: Autonomously implement and verify Mangogram Desktop changes from an inline request, task-list path, or a prepared project task source under .ai, with or without mockups. Use when Codex should split work into independently testable tasks and drive each through context, planning, implementation, a Debug build, one review pass, artifact-grounded in-app testing with optional Computer Use, resumable artifacts, a lean parent task, and native-Windows CRLF normalization.
 ---
 
 # Implement Pipeline
@@ -41,11 +41,11 @@ Run in the **current checkout** without creating a worktree. Resolve platform, b
 and executable together; never mix native-Windows commands with a WSL tree.
 
 ```
-NATIVE_WINDOWS_BUILD = cmake --build ./out --config Debug --target Telegram
-WSL_BUILD            = Telegram/build/docker/centos_env/build_debug.sh
-EXE_CANDIDATES       = out/Debug/Telegram.exe | out/Debug/Telegram | out/Debug/Telegram.app/Contents/MacOS/Telegram
+NATIVE_WINDOWS_BUILD = cmake --build ./out --config Debug --target Mangogram
+WSL_BUILD            = Mangogram/build/docker/centos_env/build_debug.sh
+EXE_CANDIDATES       = out/Debug/Mangogram.exe | out/Debug/Mangogram | out/Debug/Mangogram.app/Contents/MacOS/Mangogram
 COMPUTER_USE_APP_TARGET = Windows: absolute EXE | macOS: absolute outer .app containing EXE | other: none unless supported
-TEST_ACCOUNT         = out/Debug/test_TelegramForcePortable
+TEST_ACCOUNT         = out/Debug/test_MangogramForcePortable
 MAX_ATTEMPTS         = 4
 MAX_TEST_RUNS        = 12
 COMPUTER_USE_POLICY  = auto | overlay-only | required (default auto; user request overrides)
@@ -81,7 +81,7 @@ host exposes overrides, match the parent. Custom agents use `model_reasoning_eff
 
 Tasks run **sequentially** in this one checkout (the build cache stays warm; app runs must serialize
 against the account anyway). To parallelize, run the skill in a different checkout/slot (e.g.
-`C:\Telegram\tdesktop`, `D:\Telegram\tdesktop`, `D:\Telegram\twin`). Each run is independent and
+`C:\Mangogram\tdesktop`, `D:\Mangogram\tdesktop`, `D:\Mangogram\twin`). Each run is independent and
 single-tree. Never run the **test phase** in two slots against the same account at once; concurrent
 clients on one auth key can trigger a session reset, so give parallel slots separate test accounts.
 
@@ -117,8 +117,8 @@ approved; use blocked-state rules only when their threshold is satisfied. Reinvo
    Verify path-scoped process control, safe folder ops, launch/capture, and a usable app-run display
    (WSLg/Xvfb counts) or stop. Never build Release; Computer Use capability is separate and optional.
 3. **Test-account gate (hard precondition — before planning or implementation).** If
-   `out/Debug/test_TelegramForcePortable` does not exist, STOP the entire skill immediately and tell
-   the user that the test account is not prepared: create `out/Debug/test_TelegramForcePortable`
+   `out/Debug/test_MangogramForcePortable` does not exist, STOP the entire skill immediately and tell
+   the user that the test account is not prepared: create `out/Debug/test_MangogramForcePortable`
    (a portable-data folder authed to a throwaway test account) before `implement` can run, because
    autonomous testing is impossible without it. Do no implementation work.
 4. **Clean-checkout gate.** Require a clean tracked worktree and clean submodules before the first
@@ -166,7 +166,7 @@ smallest recent-turn fork explicitly selected in Phase A for a chat-only visual.
 parent quality setting and is a leaf: it must not delegate. Use this prompt shape:
 
 ```
-You are a planning/splitting agent for a large C++ codebase (Telegram Desktop).
+You are a planning/splitting agent for a large C++ codebase (Mangogram Desktop).
 You are a leaf worker. Do not spawn or delegate to other agents.
 
 SOURCE — EITHER an inline request OR a path to a task-list file. If it is a PATH, READ it yourself
@@ -308,7 +308,7 @@ For each task whose normalized `Status` is neither `approved` nor `blocked`, in 
      committed, buildable commit. CONTINUE — later tasks may be independent; record the missing
      behavior.
    - **Hard stop ONLY when continuing is truly impossible** — a broken / uncommitted / non-buildable
-     checkout, or a global environment failure (file lock needing the user to close `Telegram.exe`,
+     checkout, or a global environment failure (file lock needing the user to close `Mangogram.exe`,
      the test-account gate). Only then stop and report.
    Before spawning the next task, confirm the tree is clean and HEAD is a known buildable commit.
    Never reset an unexpected or unrelated path. If the runner cannot prove and restore only its own
@@ -318,7 +318,7 @@ For each task whose normalized `Status` is neither `approved` nor `blocked`, in 
 ### task-runner prompt
 
 ````
-You are a task-runner for ONE task in an autonomous implement-and-test workflow on Telegram
+You are a task-runner for ONE task in an autonomous implement-and-test workflow on Mangogram
 Desktop (C++ / Qt). You own this stateful task end to end; no second runner may operate on it.
 Inherit the parent model and reasoning setting. At startup, select one execution mode for the task:
 - NESTED: choose only after the first real phase-leaf spawn succeeds. Give every leaf a unique
@@ -408,7 +408,7 @@ Pipeline for THIS task only, writing prompt/progress/result logs per task-think:
      changes after `git apply --3way`. Verify the patch is nonempty and reappliable. Restore only the
      inventoried overlay paths to IMPL_SHA (including inside an intended submodule) rather than
      resetting the whole checkout. If any unexpected path is dirty, hard-stop without resetting it.
-   - Use `TelegramForcePortable/.codex-implement-test-copy` as the ownership marker. SETUP may delete
+   - Use `MangogramForcePortable/.codex-implement-test-copy` as the ownership marker. SETUP may delete
      only marked live; otherwise move unmarked live to real when real is absent, or stop if both
      exist. Copy golden to live and mark it. At terminal cleanup delete marked live, then, only if
      real exists, MOVE it back to live so later manual changes are recaptured.

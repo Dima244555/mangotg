@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/docker.yml'
-      - 'Telegram/build/docker/centos_env/**'
+      - 'Mangogram/build/docker/centos_env/**'
 
 jobs:
   docker:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Docker image build.
         run: |
-          cd Telegram/build/docker/centos_env
+          cd Mangogram/build/docker/centos_env
           poetry install
           DEBUG= LTO= poetry run gen_dockerfile | DOCKER_BUILDKIT=1 docker build -t $IMAGE_TAG -
 

@@ -11,15 +11,15 @@ on:
       - '.github/**'
       - '!.github/workflows/linux.yml'
       - 'snap/**'
-      - 'Telegram/build/**'
-      - '!Telegram/build/docker/centos_env/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.bat'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/**'
+      - '!Mangogram/build/docker/centos_env/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.bat'
+      - 'Mangogram/Mangogram.plist'
   pull_request:
     paths-ignore:
       - 'docs/**'
@@ -30,15 +30,15 @@ on:
       - '.github/**'
       - '!.github/workflows/linux.yml'
       - 'snap/**'
-      - 'Telegram/build/**'
-      - '!Telegram/build/docker/centos_env/**'
-      - 'Telegram/Resources/uwp/**'
-      - 'Telegram/Resources/winrc/**'
-      - 'Telegram/SourceFiles/platform/win/**'
-      - 'Telegram/SourceFiles/platform/mac/**'
-      - 'Telegram/Telegram/**'
-      - 'Telegram/configure.bat'
-      - 'Telegram/Telegram.plist'
+      - 'Mangogram/build/**'
+      - '!Mangogram/build/docker/centos_env/**'
+      - 'Mangogram/Resources/uwp/**'
+      - 'Mangogram/Resources/winrc/**'
+      - 'Mangogram/SourceFiles/platform/win/**'
+      - 'Mangogram/SourceFiles/platform/mac/**'
+      - 'Mangogram/Mangogram/**'
+      - 'Mangogram/configure.bat'
+      - 'Mangogram/Mangogram.plist'
 
 jobs:
 
@@ -67,7 +67,7 @@ jobs:
           echo "WEEK=$(date -u +%G%V)" >> $GITHUB_ENV
           sudo apt update
           curl -sSL https://install.python-poetry.org | python3 -
-          cd Telegram/build/docker/centos_env
+          cd Mangogram/build/docker/centos_env
           poetry install
           DOCKERFILE=$(DEBUG= LTO= poetry run gen_dockerfile)
           echo "$DOCKERFILE" > Dockerfile
@@ -89,7 +89,7 @@ jobs:
           path: |
             ${{ runner.temp }}/.buildx-cache
             ${{ runner.temp }}/.mount-cache
-          key: ${{ runner.OS }}-libs-${{ hashFiles('Telegram/build/docker/centos_env/**') }}
+          key: ${{ runner.OS }}-libs-${{ hashFiles('Mangogram/build/docker/centos_env/**') }}
           restore-keys: ${{ runner.OS }}-libs-
 
       - name: Restore Docker cache mounts.
@@ -97,13 +97,13 @@ jobs:
         with:
           builder: ${{ steps.setup-buildx.outputs.name }}
           cache-dir: ${{ runner.temp }}/.mount-cache
-          dockerfile: Telegram/build/docker/centos_env/Dockerfile
+          dockerfile: Mangogram/build/docker/centos_env/Dockerfile
           skip-extraction: ${{ steps.cache-libs.outputs.cache-hit }}
 
       - name: Libraries.
         uses: docker/build-push-action@v7
         with:
-          context: Telegram/build/docker/centos_env
+          context: Mangogram/build/docker/centos_env
           load: ${{ env.ONLY_CACHE == 'false' }}
           tags: ${{ env.IMAGE_TAG }}
           cache-from: type=local,src=${{ runner.temp }}/.buildx-cache
@@ -114,7 +114,7 @@ jobs:
           rm -rf ${{ runner.temp }}/.buildx-cache
           mv ${{ runner.temp }}/.buildx-cache{-new,}
 
-      - name: Restore Telegram Desktop cache.
+      - name: Restore Mangogram Desktop cache.
         id: cache-tdesktop
         if: env.ONLY_CACHE == 'false'
         uses: actions/cache/restore@v6
@@ -123,16 +123,16 @@ jobs:
           key: ${{ runner.OS }}-tdesktop-${{ matrix.defines || 'null' }}-${{ env.WEEK }}
           restore-keys: ${{ runner.OS }}-tdesktop-${{ matrix.defines || 'null' }}-
 
-      - name: Telegram Desktop build.
+      - name: Mangogram Desktop build.
         if: env.ONLY_CACHE == 'false'
         run: |
           DEFINE=""
           if [ -n "${{ matrix.defines }}" ]; then
             DEFINE="-D ${{ matrix.defines }}=ON"
             echo Define from matrix: $DEFINE
-            echo "ARTIFACT_NAME=Telegram ${{ matrix.defines }}" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram ${{ matrix.defines }}" >> $GITHUB_ENV
           else
-            echo "ARTIFACT_NAME=Telegram" >> $GITHUB_ENV
+            echo "ARTIFACT_NAME=Mangogram" >> $GITHUB_ENV
           fi
 
           mkdir -p ${{ runner.temp }}/.tdesktop-cache
@@ -144,7 +144,7 @@ jobs:
           -e CONFIG=Debug \
           -e CCACHE_SLOPPINESS=pch_defines,time_macros \
           $IMAGE_TAG \
-          env -u CCACHE_DISABLE /usr/src/tdesktop/Telegram/build/docker/centos_env/build.sh \
+          env -u CCACHE_DISABLE /usr/src/tdesktop/Mangogram/build/docker/centos_env/build.sh \
           -D CMAKE_CONFIGURATION_TYPES=Debug \
           -D CMAKE_C_FLAGS_DEBUG="-O0 -fpch-preprocess" \
           -D CMAKE_CXX_FLAGS_DEBUG="-O0 -fpch-preprocess" \
@@ -154,7 +154,7 @@ jobs:
           -D DESKTOP_APP_DISABLE_CRASH_REPORTS=OFF \
           $DEFINE
 
-      - name: Save Telegram Desktop cache.
+      - name: Save Mangogram Desktop cache.
         if: >
           github.ref_name == github.event.repository.default_branch
             && steps.cache-tdesktop.outputs.cache-hit != 'true'
@@ -167,7 +167,7 @@ jobs:
       - name: Check.
         if: env.ONLY_CACHE == 'false'
         run: |
-          filePath="out/Debug/Telegram"
+          filePath="out/Debug/Mangogram"
           if test -f "$filePath"; then
             echo "Build successfully done! :)"
 
@@ -183,7 +183,7 @@ jobs:
         run: |
           cd out/Debug
           mkdir artifact
-          mv {Telegram,Updater} artifact/
+          mv {Mangogram,Updater} artifact/
       - uses: actions/upload-artifact@v7
         if: env.UPLOAD_ARTIFACT == 'true'
         name: Upload artifact.
