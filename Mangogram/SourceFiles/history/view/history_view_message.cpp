@@ -1690,6 +1690,18 @@ void Message::draw(Painter &p, const PaintContext &context) const {
 	const auto item = data();
 	const auto media = this->media();
 
+	const auto keptDeleted = item->history()->owner().isMessageKeptDeleted(
+		item->fullId());
+	const auto prevOpacity = p.opacity();
+	if (keptDeleted) {
+		p.setOpacity(prevOpacity * 0.6);
+	}
+	const auto restoreOpacity = gsl::finally([&] {
+		if (keptDeleted) {
+			p.setOpacity(prevOpacity);
+		}
+	});
+
 	const auto hasGesture = context.gestureHorizontal.translation
 		&& (context.gestureHorizontal.msgBareId == item->fullId().msg.bare);
 	if (hasGesture) {
@@ -5206,17 +5218,6 @@ void Message::drawInfo(
 	const auto size = _bottomInfo.currentSize();
 	const auto dateX = infoRight - size.width();
 	const auto dateY = infoBottom - size.height();
-	const auto keptDeleted = data()->history()->owner().isMessageKeptDeleted(
-		data()->fullId());
-	if (keptDeleted) {
-		p.setPen(st->msgServiceFg());
-		const auto badge = QString::fromUtf8("\xF0\x9F\x97\x91 ");
-		const auto badgeW = p.fontMetrics().horizontalAdvance(badge);
-		p.drawText(
-			dateX - badgeW,
-			dateY + st::msgDateFont->ascent,
-			badge);
-	}
 	if (type == InfoDisplayType::Image) {
 		const auto dateW = size.width() + 2 * st::msgDateImgPadding.x();
 		const auto dateH = size.height() + 2 * st::msgDateImgPadding.y();
