@@ -114,7 +114,7 @@ jobs:
       - name: Native Tools Command Prompt.
         shell: cmd
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat" || exit /b 1
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat" || exit /b 1
           echo INCLUDE=%INCLUDE%>>%GITHUB_ENV%
           echo LIB=%LIB%>>%GITHUB_ENV%
           echo LIBPATH=%LIBPATH%>>%GITHUB_ENV%
