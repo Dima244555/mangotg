@@ -1100,6 +1100,44 @@ void AddCopyLinkAction(
 		&st::menuIconCopy);
 }
 
+void ShowMessageEditHistoryBox(
+		not_null<Ui::GenericBox*> box,
+		not_null<Window::SessionController*> controller,
+		FullMsgId itemId) {
+	box->setTitle(rpl::single(u"Message history"_q));
+
+	const auto owner = &controller->session().data();
+	const auto revisions = owner->editRevisions(itemId);
+	const auto item = owner->message(itemId);
+
+	const auto addBlock = [&](TimeId date, const QString &text, bool current) {
+		auto stamp = base::unixtime::parse(date).toString(u"HH:mm  dd.MM.yyyy"_q);
+		if (current) {
+			stamp += u"  \xE2\x80\xA2  current"_q;
+		}
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(stamp),
+			st::boxLabel));
+		box->addRow(object_ptr<Ui::FlatLabel>(
+			box,
+			rpl::single(text.isEmpty() ? u"(empty)"_q : text),
+			st::boxLabel));
+		box->addSkip(st::defaultBox.buttonPadding.top());
+	};
+
+	if (revisions) {
+		for (auto i = revisions->rbegin(); i != revisions->rend(); ++i) {
+			addBlock(i->date, i->text.text, false);
+		}
+	}
+	if (item) {
+		addBlock(item->date(), item->originalText().text, true);
+	}
+
+	box->addButton(tr::lng_close(), [=] { box->closeBox(); });
+}
+
 void EditTagBox(
 		not_null<Ui::GenericBox*> box,
 		not_null<Window::SessionController*> controller,
@@ -1494,6 +1532,19 @@ void FillContextMenuItems(
 	}
 
 	AddTopMessageActions(result, request, list);
+
+	if (item) {
+		const auto revisions = item->history()->owner().editRevisions(itemId);
+		if (revisions && !revisions->empty()) {
+			const auto controller = list->controller();
+			result->addAction(u"Message history"_q, [=] {
+				controller->show(Box(
+					ShowMessageEditHistoryBox,
+					controller,
+					itemId));
+			}, &st::menuIconEdit);
+		}
+	}
 	if (lnkPhoto && request.selectedItems.empty()) {
 		AddPhotoActions(result, lnkPhoto, item, list);
 	} else if (lnkDocument) {

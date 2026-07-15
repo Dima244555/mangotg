@@ -2879,6 +2879,8 @@ void Session::updateEditedMessage(const MTPMessage &data) {
 		Reactions::CheckUnknownForUnread(this, data);
 		return;
 	}
+	auto prevText = existing->originalText();
+	const auto prevDate = existing->date();
 	if (existing->isLocalUpdateMedia() && data.type() == mtpc_message) {
 		updateExistingMessage(data.c_message());
 	}
@@ -2888,6 +2890,10 @@ void Session::updateEditedMessage(const MTPMessage &data) {
 	}, [&](const auto &data) {
 		existing->applyEdition(HistoryMessageEdition(_session, data));
 	});
+	if (!prevText.text.isEmpty()
+			&& prevText != existing->originalText()) {
+		saveEditRevision(existing->fullId(), prevDate, std::move(prevText));
+	}
 }
 
 void Session::processMessages(
@@ -3141,6 +3147,24 @@ void Session::markMessageAsKeptDeleted(not_null<HistoryItem*> item) {
 
 bool Session::isMessageKeptDeleted(FullMsgId id) const {
 	return _keptDeletedMessages.contains(id);
+}
+
+void Session::saveEditRevision(
+		FullMsgId id,
+		TimeId date,
+		TextWithEntities text) {
+	auto &list = _editRevisions[id];
+	list.push_back({ date, std::move(text) });
+	constexpr auto kMaxRevisionsPerMessage = 50;
+	if (list.size() > kMaxRevisionsPerMessage) {
+		list.erase(list.begin());
+	}
+}
+
+const std::vector<Session::EditRevision> *Session::editRevisions(
+		FullMsgId id) const {
+	const auto i = _editRevisions.find(id);
+	return (i != _editRevisions.end()) ? &i->second : nullptr;
 }
 
 void Session::removeDependencyMessage(not_null<HistoryItem*> item) {

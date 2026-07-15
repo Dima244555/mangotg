@@ -597,6 +597,17 @@ public:
 	void markMessageAsKeptDeleted(not_null<HistoryItem*> item);
 	[[nodiscard]] bool isMessageKeptDeleted(FullMsgId id) const;
 
+	struct EditRevision {
+		TimeId date = 0;
+		TextWithEntities text;
+	};
+	void saveEditRevision(
+		FullMsgId id,
+		TimeId date,
+		TextWithEntities text);
+	[[nodiscard]] const std::vector<EditRevision> *editRevisions(
+		FullMsgId id) const;
+
 	void removeReactionsFromParticipant(
 		not_null<PeerData*> peer,
 		MsgId msgId,
@@ -1247,6 +1258,7 @@ private:
 	std::unordered_map<MsgId, not_null<HistoryItem*>> _nonChannelMessages;
 
 	base::flat_set<FullMsgId> _keptDeletedMessages;
+	base::flat_map<FullMsgId, std::vector<EditRevision>> _editRevisions;
 
 	base::flat_map<uint64, FullMsgId> _messageByRandomId;
 	base::flat_map<uint64, SentData> _sentMessagesData;
