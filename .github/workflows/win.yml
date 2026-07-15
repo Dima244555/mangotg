@@ -111,12 +111,17 @@ jobs:
           Remove-Item vs_buildtools.exe -Force
           if ($p.ExitCode -ne 0 -and $p.ExitCode -ne 3010) { exit $p.ExitCode }
 
-      - uses: Eden-CI/msvc-dev-cmd@master
-        name: Native Tools Command Prompt.
-        with:
-          arch: ${{ matrix.arch }}
-          sdk: ${{ env.SDK }}
-          toolset: ${{ case(matrix.arch == 'arm64', '', '14.44') }}
+      - name: Native Tools Command Prompt.
+        shell: cmd
+        run: |
+          call "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvars64.bat" || exit /b 1
+          echo INCLUDE=%INCLUDE%>>%GITHUB_ENV%
+          echo LIB=%LIB%>>%GITHUB_ENV%
+          echo LIBPATH=%LIBPATH%>>%GITHUB_ENV%
+          echo PATH=%PATH%>>%GITHUB_ENV%
+          echo VCINSTALLDIR=%VCINSTALLDIR%>>%GITHUB_ENV%
+          echo VCToolsInstallDir=%VCToolsInstallDir%>>%GITHUB_ENV%
+          echo WindowsSdkDir=%WindowsSdkDir%>>%GITHUB_ENV%
 
       - name: NuGet sources.
         run: |
