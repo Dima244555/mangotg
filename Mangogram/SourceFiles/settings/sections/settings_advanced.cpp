@@ -59,6 +59,7 @@ https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 #include "ui/vertical_list.h"
 #include "ui/widgets/buttons.h"
 #include "ui/widgets/checkbox.h"
+#include "ui/widgets/fields/input_field.h"
 #include "ui/widgets/labels.h"
 #include "ui/wrap/slide_wrap.h"
 #include "ui/wrap/vertical_layout.h"
@@ -1286,6 +1287,85 @@ void BuildKeepDeletedSection(SectionBuilder &builder) {
 	builder.addSkip();
 }
 
+constexpr auto kForwardExclusionsPref = std::string_view(
+	"forward_tag_exclusions");
+
+[[nodiscard]] QString LoadForwardExclusionsText() {
+	const auto raw = Core::App().settings().readPref<QByteArray>(
+		kForwardExclusionsPref);
+	return QString::fromUtf8(raw);
+}
+
+void SaveForwardExclusionsText(const QString &text) {
+	auto cleaned = QStringList();
+	for (const auto &line : text.split(QChar('\n'))) {
+		const auto trimmed = line.trimmed();
+		if (!trimmed.isEmpty()) {
+			cleaned.push_back(trimmed);
+		}
+	}
+	Core::App().settings().writePref<QByteArray>(
+		kForwardExclusionsPref,
+		cleaned.join(QChar('\n')).toUtf8());
+	Core::App().saveSettingsDelayed();
+}
+
+void EditForwardExclusionsBox(not_null<Ui::GenericBox*> box) {
+	box->setTitle(rpl::single(u"Forward tag exclusions"_q));
+
+	const auto layout = box->verticalLayout();
+	const auto field = box->addRow(
+		object_ptr<Ui::InputField>(
+			box,
+			st::defaultInputField,
+			Ui::InputField::Mode::MultiLine,
+			rpl::single(u"user_id  or  @username, one per line"_q),
+			TextWithTags{ LoadForwardExclusionsText() }),
+		st::boxRowPadding + QMargins(0, 0, 0, st::settingsPrivacySkip));
+	field->setMinHeight(st::boxTextFont->height * 6);
+	Ui::AddDividerText(
+		layout,
+		rpl::single(u"Members from this list will never be tagged "
+			"when auto-tagging on forward. Numeric IDs and @usernames "
+			"are both accepted."_q));
+
+	box->setFocusCallback([=] { field->setFocusFast(); });
+
+	box->addButton(tr::lng_settings_save(), [=] {
+		SaveForwardExclusionsText(field->getLastText());
+		box->closeBox();
+	});
+	box->addButton(tr::lng_cancel(), [=] { box->closeBox(); });
+}
+
+void BuildForwardExclusionsSection(SectionBuilder &builder) {
+	const auto controller = builder.controller();
+	builder.addDivider();
+	builder.addSkip();
+	builder.addSubsectionTitle({
+		.id = u"advanced/forward_exclusions"_q,
+		.title = rpl::single(u"Forwarding"_q),
+		.keywords = {
+			u"forward"_q,
+			u"tag"_q,
+			u"mention"_q,
+			u"exclude"_q,
+		},
+	});
+
+	builder.addButton({
+		.id = u"advanced/forward_exclusions_edit"_q,
+		.title = rpl::single(u"Manage auto-tag exclusion list"_q),
+		.icon = { &st::menuIconEdit },
+		.onClick = [=] {
+			controller->show(Box(EditForwardExclusionsBox));
+		},
+		.keywords = { u"exclude"_q, u"tag"_q, u"forward"_q },
+	});
+
+	builder.addSkip();
+}
+
 class Advanced : public Section<Advanced> {
 public:
 	Advanced(
@@ -1321,6 +1401,7 @@ const auto kMeta = BuildHelper({
 	BuildSpellcheckerSection(builder);
 	BuildScreenReaderSection(builder);
 	BuildKeepDeletedSection(builder);
+	BuildForwardExclusionsSection(builder);
 	if (autoUpdate) {
 		BuildUpdateSection(builder, false);
 	}
