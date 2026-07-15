@@ -123,6 +123,8 @@ jobs:
           echo VCToolsInstallDir=%VCToolsInstallDir%>>%GITHUB_ENV%
           echo WindowsSdkDir=%WindowsSdkDir%>>%GITHUB_ENV%
           echo Platform=x64>>%GITHUB_ENV%
+          echo GYP_MSVS_VERSION=2022>>%GITHUB_ENV%
+          echo GYP_MSVS_OVERRIDE_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools>>%GITHUB_ENV%
 
       - name: NuGet sources.
         run: |
