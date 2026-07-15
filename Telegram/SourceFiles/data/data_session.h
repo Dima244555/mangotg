@@ -594,6 +594,9 @@ public:
 		PeerId peerId,
 		const QVector<MTPint> &data);
 
+	void markMessageAsKeptDeleted(not_null<HistoryItem*> item);
+	[[nodiscard]] bool isMessageKeptDeleted(FullMsgId id) const;
+
 	void removeReactionsFromParticipant(
 		not_null<PeerData*> peer,
 		MsgId msgId,
@@ -1242,6 +1245,8 @@ private:
 	base::Timer _formattedDateTimer;
 
 	std::unordered_map<MsgId, not_null<HistoryItem*>> _nonChannelMessages;
+
+	base::flat_set<FullMsgId> _keptDeletedMessages;
 
 	base::flat_map<uint64, FullMsgId> _messageByRandomId;
 	base::flat_map<uint64, SentData> _sentMessagesData;

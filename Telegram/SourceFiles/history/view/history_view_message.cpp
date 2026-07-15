@@ -5206,6 +5206,17 @@ void Message::drawInfo(
 	const auto size = _bottomInfo.currentSize();
 	const auto dateX = infoRight - size.width();
 	const auto dateY = infoBottom - size.height();
+	const auto keptDeleted = item->history()->owner().isMessageKeptDeleted(
+		item->fullId());
+	if (keptDeleted) {
+		p.setPen(st->msgServiceFg());
+		const auto badge = QString::fromUtf8("\xF0\x9F\x97\x91 ");
+		const auto badgeW = p.fontMetrics().horizontalAdvance(badge);
+		p.drawText(
+			dateX - badgeW,
+			dateY + st::msgDateFont->ascent,
+			badge);
+	}
 	if (type == InfoDisplayType::Image) {
 		const auto dateW = size.width() + 2 * st::msgDateImgPadding.x();
 		const auto dateH = size.height() + 2 * st::msgDateImgPadding.y();

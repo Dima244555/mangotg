@@ -60,6 +60,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
 #include "history/history_streamed_drafts.h"
 #include "history/history_unread_things.h"
 #include "core/application.h"
+#include "core/core_settings.h"
 #include "storage/storage_account.h"
 #include "storage/storage_facade.h"
 #include "storage/storage_user_photos.h"
@@ -1396,7 +1397,27 @@ void Updates::applyUpdateNoPtsCheck(const MTPUpdate &update) {
 
 	case mtpc_updateDeleteMessages: {
 		auto &d = update.c_updateDeleteMessages();
-		_session->data().processNonChannelMessagesDeleted(d.vmessages().v);
+		const auto keep = Core::App().settings().readPref<bool>(
+			"keep_deleted_messages",
+			false);
+		if (keep) {
+			auto realDelete = QVector<MTPint>();
+			realDelete.reserve(d.vmessages().v.size());
+			for (const auto &messageId : d.vmessages().v) {
+				if (const auto item = _session->data().nonChannelMessage(messageId.v)) {
+					if (!item->out()) {
+						_session->data().markMessageAsKeptDeleted(item);
+						continue;
+					}
+				}
+				realDelete.push_back(messageId);
+			}
+			if (!realDelete.isEmpty()) {
+				_session->data().processNonChannelMessagesDeleted(realDelete);
+			}
+		} else {
+			_session->data().processNonChannelMessagesDeleted(d.vmessages().v);
+		}
 	} break;
 
 	case mtpc_updateNewChannelMessage: {
@@ -1446,9 +1467,30 @@ void Updates::applyUpdateNoPtsCheck(const MTPUpdate &update) {
 
 	case mtpc_updateDeleteChannelMessages: {
 		auto &d = update.c_updateDeleteChannelMessages();
-		_session->data().processMessagesDeleted(
-			peerFromChannel(d.vchannel_id().v),
-			d.vmessages().v);
+		const auto peerId = peerFromChannel(d.vchannel_id().v);
+		const auto keep = Core::App().settings().readPref<bool>(
+			"keep_deleted_messages",
+			false);
+		if (keep) {
+			auto realDelete = QVector<MTPint>();
+			realDelete.reserve(d.vmessages().v.size());
+			for (const auto &messageId : d.vmessages().v) {
+				if (const auto item = _session->data().message(peerId, messageId.v)) {
+					if (!item->out()) {
+						_session->data().markMessageAsKeptDeleted(item);
+						continue;
+					}
+				}
+				realDelete.push_back(messageId);
+			}
+			if (!realDelete.isEmpty()) {
+				_session->data().processMessagesDeleted(peerId, realDelete);
+			}
+		} else {
+			_session->data().processMessagesDeleted(
+				peerId,
+				d.vmessages().v);
+		}
 	} break;
 
 	case mtpc_updatePinnedMessages: {

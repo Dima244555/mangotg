@@ -1249,6 +1249,43 @@ void BuildScreenReaderSection(SectionBuilder &builder) {
 	builder.addSkip();
 }
 
+void BuildKeepDeletedSection(SectionBuilder &builder) {
+	builder.addDivider();
+	builder.addSkip();
+	builder.addSubsectionTitle({
+		.id = u"advanced/keep_deleted"_q,
+		.title = rpl::single(u"Deleted messages"_q),
+		.keywords = { u"deleted"_q, u"keep"_q, u"antirevoke"_q, u"history"_q },
+	});
+
+	const auto initial = Core::App().settings().readPref<bool>(
+		"keep_deleted_messages",
+		false);
+	const auto toggle = builder.addButton({
+		.id = u"advanced/keep_deleted_toggle"_q,
+		.title = rpl::single(u"Keep deleted messages locally"_q),
+		.st = &st::settingsButtonNoIcon,
+		.toggled = rpl::single(initial),
+		.keywords = { u"deleted"_q, u"keep"_q, u"antirevoke"_q },
+	});
+
+	if (toggle) {
+		toggle->toggledValue(
+		) | rpl::filter([=](bool value) {
+			return (value != Core::App().settings().readPref<bool>(
+				"keep_deleted_messages",
+				false));
+		}) | rpl::on_next([=](bool value) {
+			Core::App().settings().writePref<bool>(
+				"keep_deleted_messages",
+				value);
+			Core::App().saveSettingsDelayed();
+		}, toggle->lifetime());
+	}
+
+	builder.addSkip();
+}
+
 class Advanced : public Section<Advanced> {
 public:
 	Advanced(
@@ -1283,6 +1320,7 @@ const auto kMeta = BuildHelper({
 	BuildPerformanceSection(builder);
 	BuildSpellcheckerSection(builder);
 	BuildScreenReaderSection(builder);
+	BuildKeepDeletedSection(builder);
 	if (autoUpdate) {
 		BuildUpdateSection(builder, false);
 	}

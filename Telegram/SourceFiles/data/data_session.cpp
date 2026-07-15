@@ -3133,6 +3133,16 @@ void Session::processNonChannelMessagesDeleted(const QVector<MTPint> &data) {
 	}
 }
 
+void Session::markMessageAsKeptDeleted(not_null<HistoryItem*> item) {
+	if (_keptDeletedMessages.emplace(item->fullId()).second) {
+		requestItemRepaint(item);
+	}
+}
+
+bool Session::isMessageKeptDeleted(FullMsgId id) const {
+	return _keptDeletedMessages.contains(id);
+}
+
 void Session::removeDependencyMessage(not_null<HistoryItem*> item) {
 	const auto i = _dependentMessages.find(item);
 	if (i != end(_dependentMessages)) {
