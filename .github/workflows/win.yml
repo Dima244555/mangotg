@@ -134,7 +134,7 @@ jobs:
           nuget sources Add -Source https://api.nuget.org/v3/index.json & exit 0
 
       - name: Install sccache.
-        shell: pwsh
+        shell: powershell
         run: |
           $binDir = 'C:\sccache-bin'
           if (-not (Test-Path "$binDir\sccache.exe")) {
@@ -142,7 +142,7 @@ jobs:
             $ver = '0.9.0'
             $pkg = "sccache-v$ver-x86_64-pc-windows-msvc"
             $url = "https://github.com/mozilla/sccache/releases/download/v$ver/$pkg.tar.gz"
-            Invoke-WebRequest -Uri $url -OutFile sccache.tar.gz
+            Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile sccache.tar.gz
             tar -xzf sccache.tar.gz
             Copy-Item -Force -Path "$pkg\sccache.exe" -Destination "$binDir\sccache.exe"
             Remove-Item -Recurse -Force $pkg,'sccache.tar.gz'
