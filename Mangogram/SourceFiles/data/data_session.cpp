@@ -3147,6 +3147,10 @@ void Session::saveEditRevision(
 		FullMsgId id,
 		TimeId date,
 		TextWithEntities text) {
+	LOG(("EditHistory: save revision peer=%1 msg=%2 text=%3"
+		).arg(id.peer.value
+		).arg(id.msg.bare
+		).arg(text.text.left(80)));
 	auto &list = _editRevisions[id];
 	list.push_back({ date, std::move(text) });
 	constexpr auto kMaxRevisionsPerMessage = 50;

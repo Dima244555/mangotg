@@ -1534,16 +1534,16 @@ void FillContextMenuItems(
 	AddTopMessageActions(result, request, list);
 
 	if (item) {
+		const auto controller = list->controller();
 		const auto revisions = item->history()->owner().editRevisions(itemId);
-		if (revisions && !revisions->empty()) {
-			const auto controller = list->controller();
-			result->addAction(u"Message history"_q, [=] {
-				controller->show(Box(
-					ShowMessageEditHistoryBox,
-					controller,
-					itemId));
-			}, &st::menuIconEdit);
-		}
+		const auto count = revisions ? int(revisions->size()) : 0;
+		const auto title = u"Message history (%1)"_q.arg(count);
+		result->addAction(title, [=] {
+			controller->show(Box(
+				ShowMessageEditHistoryBox,
+				controller,
+				itemId));
+		}, &st::menuIconEdit);
 	}
 	if (lnkPhoto && request.selectedItems.empty()) {
 		AddPhotoActions(result, lnkPhoto, item, list);
