@@ -2195,6 +2195,9 @@ void HistoryItem::clearMainView() {
 }
 
 void HistoryItem::applyEdition(HistoryMessageEdition &&edition) {
+	auto prevRevisionText = originalText();
+	const auto prevRevisionDate = date();
+
 	int keyboardTop = -1;
 	//if (!pendingResize()) {// #TODO edit bot message
 	//	if (auto keyboard = inlineReplyKeyboard()) {
@@ -2358,6 +2361,14 @@ void HistoryItem::applyEdition(HistoryMessageEdition &&edition) {
 	}
 
 	finishEdition(keyboardTop);
+
+	if (!prevRevisionText.text.isEmpty()
+			&& prevRevisionText != originalText()) {
+		history()->owner().saveEditRevision(
+			fullId(),
+			prevRevisionDate,
+			std::move(prevRevisionText));
+	}
 }
 
 void HistoryItem::applyChanges(not_null<Data::Story*> story) {

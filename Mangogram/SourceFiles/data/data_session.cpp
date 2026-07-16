@@ -2879,8 +2879,6 @@ void Session::updateEditedMessage(const MTPMessage &data) {
 		Reactions::CheckUnknownForUnread(this, data);
 		return;
 	}
-	auto prevText = existing->originalText();
-	const auto prevDate = existing->date();
 	if (existing->isLocalUpdateMedia() && data.type() == mtpc_message) {
 		updateExistingMessage(data.c_message());
 	}
@@ -2890,10 +2888,6 @@ void Session::updateEditedMessage(const MTPMessage &data) {
 	}, [&](const auto &data) {
 		existing->applyEdition(HistoryMessageEdition(_session, data));
 	});
-	if (!prevText.text.isEmpty()
-			&& prevText != existing->originalText()) {
-		saveEditRevision(existing->fullId(), prevDate, std::move(prevText));
-	}
 }
 
 void Session::processMessages(
