@@ -173,6 +173,7 @@ private:
 		int nextIndex = 0;
 		int succeeded = 0;
 		int failed = 0;
+		std::vector<not_null<UserData*>> users;
 	};
 	std::unique_ptr<BulkState> _bulk;
 

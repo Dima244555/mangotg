@@ -87,6 +87,7 @@ https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 #include "data/data_message_reactions.h"
 #include "data/data_user.h"
 #include "data/stickers/data_custom_emoji.h"
+#include "api/api_common.h"
 #include "chat_helpers/message_field.h" // FactcheckFieldIniter.
 #include "core/file_utilities.h"
 #include "core/click_handler_types.h"
@@ -98,6 +99,7 @@ https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 #include "window/window_session_controller.h"
 #include "lang/lang_keys.h"
 #include "core/application.h"
+#include "core/core_settings.h"
 #include "main/main_app_config.h"
 #include "main/main_session.h"
 #include "main/main_session_settings.h"
@@ -1100,11 +1102,103 @@ void AddCopyLinkAction(
 		&st::menuIconCopy);
 }
 
+[[nodiscard]] std::pair<base::flat_set<uint64>, base::flat_set<QString>>
+LoadTagExclusions() {
+	const auto raw = Core::App().settings().readPref<QByteArray>(
+		"forward_tag_exclusions");
+	auto ids = base::flat_set<uint64>();
+	auto names = base::flat_set<QString>();
+	for (const auto &line : QString::fromUtf8(raw).split(QChar('\n'))) {
+		const auto s = line.trimmed();
+		if (s.isEmpty()) {
+			continue;
+		}
+		if (s.startsWith(QChar('@'))) {
+			names.emplace(s.mid(1).toLower());
+		} else {
+			bool ok = false;
+			const auto id = s.toULongLong(&ok);
+			if (ok) {
+				ids.emplace(id);
+			}
+		}
+	}
+	return { std::move(ids), std::move(names) };
+}
+
+void TagAllParticipants(
+		not_null<Window::SessionController*> controller,
+		not_null<ChannelData*> channel,
+		not_null<History*> history) {
+	const auto weakController = base::make_weak(controller);
+	channel->session().api().request(MTPchannels_GetParticipants(
+		channel->inputChannel(),
+		MTP_channelParticipantsRecent(),
+		MTP_int(0),
+		MTP_int(200),
+		MTP_long(0)
+	)).done([=](const MTPchannels_ChannelParticipants &result) {
+		auto exclusions = LoadTagExclusions();
+		const auto &exIds = exclusions.first;
+		const auto &exNames = exclusions.second;
+		result.match([&](const MTPDchannels_channelParticipants &data) {
+			channel->session().data().processUsers(data.vusers());
+			auto usernames = QStringList();
+			for (const auto &u : data.vusers().v) {
+				if (u.type() != mtpc_user) {
+					continue;
+				}
+				const auto &d = u.c_user();
+				const auto uid = UserId(d.vid().v);
+				if (exIds.contains(uint64(uid.bare))) {
+					continue;
+				}
+				const auto user = channel->session().data().userLoaded(uid);
+				if (!user) {
+					continue;
+				}
+				if (user->isSelf() || user->isBot()) {
+					continue;
+				}
+				const auto uname = user->username();
+				if (uname.isEmpty()) {
+					continue;
+				}
+				if (exNames.contains(uname.toLower())) {
+					continue;
+				}
+				usernames.push_back(u"@%1"_q.arg(uname));
+			}
+			if (usernames.isEmpty()) {
+				if (const auto strong = weakController.get()) {
+					strong->showToast(
+						u"\u041d\u0435\u043a\u043e\u0433\u043e \u0442\u0435\u0433\u043d\u0443\u0442\u044c"_q);
+				}
+				return;
+			}
+			auto message = Api::MessageToSend(Api::SendAction(history));
+			message.textWithTags = { usernames.join(QChar(' ')), {} };
+			channel->session().api().sendMessage(std::move(message));
+		}, [&](const MTPDchannels_channelParticipantsNotModified &) {
+			if (const auto strong = weakController.get()) {
+				strong->showToast(
+					u"\u0421\u043f\u0438\u0441\u043e\u043a \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432 \u043d\u0435 \u043f\u043e\u043b\u0443\u0447\u0435\u043d"_q);
+			}
+		});
+	}).fail([=](const MTP::Error &error) {
+		if (const auto strong = weakController.get()) {
+			strong->showToast(
+				u"\u041e\u0448\u0438\u0431\u043a\u0430: %1"_q.arg(error.type()));
+		}
+	}).send();
+}
+
 void ShowMessageEditHistoryBox(
 		not_null<Ui::GenericBox*> box,
 		not_null<Window::SessionController*> controller,
 		FullMsgId itemId) {
-	box->setTitle(rpl::single(u"Message history"_q));
+	box->setTitle(rpl::single(
+		u"\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f"_q));
 
 	const auto owner = &controller->session().data();
 	const auto revisions = owner->editRevisions(itemId);
@@ -1113,7 +1207,7 @@ void ShowMessageEditHistoryBox(
 	const auto addBlock = [&](TimeId date, const QString &text, bool current) {
 		auto stamp = base::unixtime::parse(date).toString(u"HH:mm  dd.MM.yyyy"_q);
 		if (current) {
-			stamp += u"  \xE2\x80\xA2  current"_q;
+			stamp += u"  \xE2\x80\xA2  \u0442\u0435\u043a\u0443\u0449\u0430\u044f"_q;
 		}
 		box->addRow(object_ptr<Ui::FlatLabel>(
 			box,
@@ -1121,7 +1215,7 @@ void ShowMessageEditHistoryBox(
 			st::boxLabel));
 		box->addRow(object_ptr<Ui::FlatLabel>(
 			box,
-			rpl::single(text.isEmpty() ? u"(empty)"_q : text),
+			rpl::single(text.isEmpty() ? u"(\u043f\u0443\u0441\u0442\u043e)"_q : text),
 			st::boxLabel));
 		box->addSkip(st::defaultBox.buttonPadding.top());
 	};
@@ -1537,13 +1631,28 @@ void FillContextMenuItems(
 		const auto controller = list->controller();
 		const auto revisions = item->history()->owner().editRevisions(itemId);
 		const auto count = revisions ? int(revisions->size()) : 0;
-		const auto title = u"Message history (%1)"_q.arg(count);
+		const auto title = u"\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f (%1)"_q.arg(count);
 		result->addAction(title, [=] {
 			controller->show(Box(
 				ShowMessageEditHistoryBox,
 				controller,
 				itemId));
 		}, &st::menuIconEdit);
+	}
+
+	if (item) {
+		const auto peer = item->history()->peer;
+		if (const auto channel = peer->asChannel()
+			; channel && channel->isMegagroup()) {
+			const auto controller = list->controller();
+			const auto history = item->history();
+			result->addAction(
+				u"\u0422\u0435\u0433\u043d\u0443\u0442\u044c \u0432\u0441\u0435\u0445 \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432"_q,
+				[=] {
+					TagAllParticipants(controller, channel, history);
+				},
+				&st::menuIconGroups);
+		}
 	}
 	if (lnkPhoto && request.selectedItems.empty()) {
 		AddPhotoActions(result, lnkPhoto, item, list);

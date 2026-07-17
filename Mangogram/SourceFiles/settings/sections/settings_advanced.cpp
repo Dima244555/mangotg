@@ -1255,8 +1255,8 @@ void BuildKeepDeletedSection(SectionBuilder &builder) {
 	builder.addSkip();
 	builder.addSubsectionTitle({
 		.id = u"advanced/keep_deleted"_q,
-		.title = rpl::single(u"Deleted messages"_q),
-		.keywords = { u"deleted"_q, u"keep"_q, u"antirevoke"_q, u"history"_q },
+		.title = rpl::single(u"\u0423\u0434\u0430\u043b\u0451\u043d\u043d\u044b\u0435 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f"_q),
+		.keywords = { u"deleted"_q, u"keep"_q, u"antirevoke"_q, u"history"_q, u"\u0443\u0434\u0430\u043b\u0451\u043d\u043d\u044b\u0435"_q },
 	});
 
 	const auto initial = Core::App().settings().readPref<bool>(
@@ -1264,7 +1264,7 @@ void BuildKeepDeletedSection(SectionBuilder &builder) {
 		true);
 	const auto toggle = builder.addButton({
 		.id = u"advanced/keep_deleted_toggle"_q,
-		.title = rpl::single(u"Keep deleted messages locally"_q),
+		.title = rpl::single(u"\u0421\u043e\u0445\u0440\u0430\u043d\u044f\u0442\u044c \u0443\u0434\u0430\u043b\u0451\u043d\u043d\u044b\u0435 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e"_q),
 		.st = &st::settingsButtonNoIcon,
 		.toggled = rpl::single(initial),
 		.keywords = { u"deleted"_q, u"keep"_q, u"antirevoke"_q },
@@ -1311,7 +1311,8 @@ void SaveForwardExclusionsText(const QString &text) {
 }
 
 void EditForwardExclusionsBox(not_null<Ui::GenericBox*> box) {
-	box->setTitle(rpl::single(u"Forward tag exclusions"_q));
+	box->setTitle(rpl::single(
+		u"\u0418\u0441\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u0430\u0432\u0442\u043e\u0442\u0435\u0433\u0430"_q));
 
 	const auto layout = box->verticalLayout();
 	const auto field = box->addRow(
@@ -1319,15 +1320,13 @@ void EditForwardExclusionsBox(not_null<Ui::GenericBox*> box) {
 			box,
 			st::defaultInputField,
 			Ui::InputField::Mode::MultiLine,
-			rpl::single(u"user_id  or  @username, one per line"_q),
+			rpl::single(u"ID \u0438\u043b\u0438 @username, \u043e\u0434\u043d\u0430 \u0437\u0430\u043f\u0438\u0441\u044c \u043d\u0430 \u0441\u0442\u0440\u043e\u043a\u0443"_q),
 			TextWithTags{ LoadForwardExclusionsText() }),
 		st::boxRowPadding + QMargins(0, 0, 0, st::settingsPrivacySkip));
 	field->setMinHeight(st::boxTextFont->height * 6);
 	Ui::AddDividerText(
 		layout,
-		rpl::single(u"Members from this list will never be tagged "
-			"when auto-tagging on forward. Numeric IDs and @usernames "
-			"are both accepted."_q));
+		rpl::single(u"\u042d\u0442\u0438 \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u0438 \u043d\u0435 \u0431\u0443\u0434\u0443\u0442 \u0442\u0435\u0433\u043d\u0443\u0442\u044b \u043f\u0440\u0438 \u0430\u0432\u0442\u043e\u0442\u0435\u0433\u0430\u043d\u0438\u0438 \u0432 \u0447\u0430\u0442\u0430\u0445. \u041f\u0440\u0438\u043d\u0438\u043c\u0430\u044e\u0442\u0441\u044f \u0447\u0438\u0441\u043b\u043e\u0432\u044b\u0435 ID \u0438 @username."_q));
 
 	box->setFocusCallback([=] { field->setFocusFast(); });
 
@@ -1344,18 +1343,20 @@ void BuildForwardExclusionsSection(SectionBuilder &builder) {
 	builder.addSkip();
 	builder.addSubsectionTitle({
 		.id = u"advanced/forward_exclusions"_q,
-		.title = rpl::single(u"Forwarding"_q),
+		.title = rpl::single(u"\u041f\u0435\u0440\u0435\u0441\u044b\u043b\u043a\u0430"_q),
 		.keywords = {
 			u"forward"_q,
 			u"tag"_q,
 			u"mention"_q,
 			u"exclude"_q,
+			u"\u043f\u0435\u0440\u0435\u0441\u044b\u043b\u043a\u0430"_q,
+			u"\u0442\u0435\u0433"_q,
 		},
 	});
 
 	builder.addButton({
 		.id = u"advanced/forward_exclusions_edit"_q,
-		.title = rpl::single(u"Manage auto-tag exclusion list"_q),
+		.title = rpl::single(u"\u0421\u043f\u0438\u0441\u043e\u043a \u0438\u0441\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u0439 \u0430\u0432\u0442\u043e\u0442\u0435\u0433\u0430"_q),
 		.icon = { &st::menuIconEdit },
 		.onClick = [=] {
 			controller->show(Box(EditForwardExclusionsBox));

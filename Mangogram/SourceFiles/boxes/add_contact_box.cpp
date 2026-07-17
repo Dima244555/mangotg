@@ -615,7 +615,7 @@ void GroupInfoBox::prepare() {
 		_bulkCount.create(
 			this,
 			st::defaultInputField,
-			rpl::single(u"Number of groups (1 = one, up to 50)"_q),
+			rpl::single(u"\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e \u0433\u0440\u0443\u043f\u043f (1 = \u043e\u0434\u043d\u0430, \u0434\u043e 50)"_q),
 			u"1"_q,
 			50);
 	}
@@ -824,15 +824,48 @@ void GroupInfoBox::submit() {
 		: 1;
 	if (bulkCount > 1
 			&& (_type == Type::Group || _type == Type::Megagroup)) {
-		_bulk = std::make_unique<BulkState>();
-		_bulk->baseTitle = title;
-		_bulk->description = description;
-		_bulk->photo = _photo->takeResultImage();
-		_bulk->total = bulkCount;
-		_bulk->nextIndex = 0;
-		_bulk->succeeded = 0;
-		_bulk->failed = 0;
-		createChannelsBulkNext();
+		const auto weak = base::make_weak(this);
+		auto initBox = [=](not_null<PeerListBox*> box) {
+			box->addButton(tr::lng_create_group_create(), [=] {
+				const auto strong = weak.get();
+				if (!strong) {
+					box->closeBox();
+					return;
+				}
+				auto rows = box->collectSelectedRows();
+				auto users = std::vector<not_null<UserData*>>();
+				users.reserve(rows.size());
+				for (const auto &row : rows) {
+					if (const auto user = row->asUser()) {
+						users.push_back(user);
+					}
+				}
+				for (int i = int(users.size()) - 1; i > 0; --i) {
+					const auto j = base::RandomIndex(i + 1);
+					if (i != j) {
+						std::swap(users[i], users[j]);
+					}
+				}
+				strong->_bulk = std::make_unique<BulkState>();
+				strong->_bulk->baseTitle = title;
+				strong->_bulk->description = description;
+				strong->_bulk->photo = strong->_photo->takeResultImage();
+				strong->_bulk->total = bulkCount;
+				strong->_bulk->nextIndex = 0;
+				strong->_bulk->succeeded = 0;
+				strong->_bulk->failed = 0;
+				strong->_bulk->users = std::move(users);
+				box->closeBox();
+				strong->createChannelsBulkNext();
+			});
+			box->addButton(tr::lng_cancel(), [=] { box->closeBox(); });
+		};
+		uiShow()->showBox(
+			Box<PeerListBox>(
+				std::make_unique<AddParticipantsBoxController>(
+					&_navigation->session()),
+				std::move(initBox)),
+			Ui::LayerOption::KeepOther);
 		return;
 	}
 	if (_type != Type::Group) {
@@ -873,9 +906,9 @@ void GroupInfoBox::createChannelsBulkNext() {
 		_bulk.reset();
 		_creationRequestId = 0;
 		uiShow()->showToast(fail
-			? u"Created %1 of %2 (%3 failed)"_q
+			? u"\u0421\u043e\u0437\u0434\u0430\u043d\u043e %1 \u0438\u0437 %2 (\u043e\u0448\u0438\u0431\u043e\u043a: %3)"_q
 				.arg(ok).arg(total).arg(fail)
-			: u"Created %1 groups"_q.arg(ok));
+			: u"\u0421\u043e\u0437\u0434\u0430\u043d\u043e \u0433\u0440\u0443\u043f\u043f: %1"_q.arg(ok));
 		closeBox();
 		return;
 	}
@@ -907,13 +940,23 @@ void GroupInfoBox::createChannelsBulkNext() {
 			};
 			const auto chats = extractChats();
 			if (chats && !chats->empty()
-					&& chats->front().type() == mtpc_channel
-					&& !_bulk->photo.isNull()) {
+					&& chats->front().type() == mtpc_channel) {
 				const auto channel = _navigation->session().data().channel(
 					chats->front().c_channel().vid());
-				channel->session().api().peerPhoto().upload(
-					channel,
-					{ QImage(_bulk->photo) });
+				if (!_bulk->photo.isNull()) {
+					channel->session().api().peerPhoto().upload(
+						channel,
+						{ QImage(_bulk->photo) });
+				}
+				if (!_bulk->users.empty()) {
+					const auto user = _bulk->users[
+						(index) % _bulk->users.size()];
+					auto list = QVector<MTPInputUser>{ user->inputUser() };
+					_api.request(MTPchannels_InviteToChannel(
+						channel->inputChannel(),
+						MTP_vector<MTPInputUser>(list)
+					)).send();
+				}
 			}
 		}
 		crl::on_main(this, [=] { createChannelsBulkNext(); });
