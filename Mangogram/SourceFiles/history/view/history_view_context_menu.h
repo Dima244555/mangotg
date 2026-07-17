@@ -10,6 +10,10 @@ https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 #include "base/unique_qptr.h"
 #include "history/view/history_view_element.h"
 
+class ChannelData;
+class History;
+struct PollData;
+
 namespace Data {
 class Session;
 struct ReactionId;
