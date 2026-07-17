@@ -1102,6 +1102,8 @@ void AddCopyLinkAction(
 		&st::menuIconCopy);
 }
 
+} // namespace
+
 [[nodiscard]] std::pair<base::flat_set<uint64>, base::flat_set<QString>>
 LoadTagExclusions() {
 	const auto raw = Core::App().settings().readPref<QByteArray>(
@@ -1231,6 +1233,8 @@ void ShowMessageEditHistoryBox(
 
 	box->addButton(tr::lng_close(), [=] { box->closeBox(); });
 }
+
+namespace {
 
 void EditTagBox(
 		not_null<Ui::GenericBox*> box,

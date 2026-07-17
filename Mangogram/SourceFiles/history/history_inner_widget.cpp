@@ -3782,6 +3782,30 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
 		}
 	}
 
+	if (leaderOrSelf) {
+		const auto item = leaderOrSelf;
+		const auto itemId = item->fullId();
+		const auto revisions = item->history()->owner().editRevisions(itemId);
+		const auto revCount = revisions ? int(revisions->size()) : 0;
+		const auto title = u"\u0418\u0441\u0442\u043e\u0440\u0438\u044f \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u044f (%1)"_q.arg(revCount);
+		_menu->addAction(title, [=] {
+			controller->show(Box(
+				HistoryView::ShowMessageEditHistoryBox,
+				controller,
+				itemId));
+		}, &st::menuIconEdit);
+		if (const auto channel = item->history()->peer->asChannel()
+			; channel && channel->isMegagroup()) {
+			const auto history = item->history();
+			_menu->addAction(
+				u"\u0422\u0435\u0433\u043d\u0443\u0442\u044c \u0432\u0441\u0435\u0445 \u0443\u0447\u0430\u0441\u0442\u043d\u0438\u043a\u043e\u0432"_q,
+				[=] {
+					HistoryView::TagAllParticipants(controller, channel, history);
+				},
+				&st::menuIconGroups);
+		}
+	}
+
 	if (_menu->empty()) {
 		_menu = nullptr;
 		return;

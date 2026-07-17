@@ -22,6 +22,7 @@ class SessionShow;
 
 namespace Ui {
 class PopupMenu;
+class GenericBox;
 class Show;
 enum class ReportReason;
 } // namespace Ui
@@ -58,6 +59,15 @@ struct ContextMenuRequest {
 base::unique_qptr<Ui::PopupMenu> FillContextMenu(
 	not_null<ListWidget*> list,
 	const ContextMenuRequest &request);
+
+void ShowMessageEditHistoryBox(
+	not_null<Ui::GenericBox*> box,
+	not_null<Window::SessionController*> controller,
+	FullMsgId itemId);
+void TagAllParticipants(
+	not_null<Window::SessionController*> controller,
+	not_null<ChannelData*> channel,
+	not_null<History*> history);
 
 void InsertPollHiddenResultsLabel(not_null<Ui::PopupMenu*> menu);
 void InsertPollVoteRestrictionsLabel(
