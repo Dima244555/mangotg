@@ -133,28 +133,6 @@ jobs:
           nuget sources Disable -Name "Microsoft Visual Studio Offline Packages"
           nuget sources Add -Source https://api.nuget.org/v3/index.json & exit 0
 
-      - name: Install sccache.
-        shell: powershell
-        run: |
-          $binDir = 'C:\sccache-bin'
-          if (-not (Test-Path "$binDir\sccache.exe")) {
-            New-Item -ItemType Directory -Force -Path $binDir | Out-Null
-            $ver = '0.9.0'
-            $pkg = "sccache-v$ver-x86_64-pc-windows-msvc"
-            $url = "https://github.com/mozilla/sccache/releases/download/v$ver/$pkg.tar.gz"
-            Invoke-WebRequest -UseBasicParsing -Uri $url -OutFile sccache.tar.gz
-            tar -xzf sccache.tar.gz
-            Copy-Item -Force -Path "$pkg\sccache.exe" -Destination "$binDir\sccache.exe"
-            Remove-Item -Recurse -Force $pkg,'sccache.tar.gz'
-          }
-          "$binDir" | Out-File -Encoding ascii -Append $Env:GITHUB_PATH
-          "SCCACHE_DIR=C:\sccache-cache" | Out-File -Encoding ascii -Append $Env:GITHUB_ENV
-          "SCCACHE_CACHE_SIZE=20G" | Out-File -Encoding ascii -Append $Env:GITHUB_ENV
-
-      - name: sccache stats (before).
-        continue-on-error: true
-        run: sccache --show-stats
-
       - name: ThirdParty cache.
         id: cache-third-party
         uses: actions/cache@v6
@@ -258,18 +236,11 @@ jobs:
           -D CMAKE_CONFIGURATION_TYPES=Debug ^
           -D CMAKE_COMPILE_WARNING_AS_ERROR=ON ^
           -D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT= ^
-          -D CMAKE_C_COMPILER_LAUNCHER=sccache ^
-          -D CMAKE_CXX_COMPILER_LAUNCHER=sccache ^
           -D DESKTOP_APP_DISABLE_AUTOUPDATE=OFF ^
           -D DESKTOP_APP_DISABLE_CRASH_REPORTS=OFF ^
           %TDESKTOP_BUILD_DEFINE%
 
           cmake --build ..\out --config Debug --parallel
-
-      - name: sccache stats (after).
-        if: always()
-        continue-on-error: true
-        run: sccache --show-stats
 
       - name: Move artifact.
         if: (env.UPLOAD_ARTIFACT == 'true') || (github.ref == 'refs/heads/nightly')

@@ -27,6 +27,7 @@ https://github.com/mangogramdesktop/tdesktop/blob/master/LEGAL
 #include "ui/widgets/checkbox.h"
 #include "ui/toast/toast.h"
 #include "ui/widgets/fields/input_field.h"
+#include "ui/widgets/fields/number_input.h"
 #include "ui/widgets/fields/special_fields.h"
 #include "ui/widgets/popup_menu.h"
 #include "ui/text/format_values.h"
@@ -610,6 +611,14 @@ void GroupInfoBox::prepare() {
 			_description,
 			&_navigation->session());
 	}
+	if (_type == Type::Group || _type == Type::Megagroup) {
+		_bulkCount.create(
+			this,
+			st::defaultInputField,
+			rpl::single(u"Number of groups (1 = one, up to 50)"_q),
+			u"1"_q,
+			50);
+	}
 	_title->submits(
 	) | rpl::on_next([=] { submitName(); }, _title->lifetime());
 
@@ -697,6 +706,26 @@ void GroupInfoBox::resizeEvent(QResizeEvent *e) {
 			+ st::defaultUserpicButton.size.height()
 			+ st::newGroupDescriptionPadding.top();
 		_description->moveToLeft(descriptionLeft, descriptionTop);
+	}
+	if (_bulkCount) {
+		const auto sideLeft = st::boxPadding.left()
+			+ st::newGroupInfoPadding.left();
+		_bulkCount->resize(
+			width()
+				- st::boxPadding.left()
+				- st::newGroupInfoPadding.left()
+				- st::boxPadding.right(),
+			_bulkCount->height());
+		auto top = st::boxPadding.top()
+			+ st::newGroupInfoPadding.top()
+			+ st::defaultUserpicButton.size.height()
+			+ st::newGroupDescriptionPadding.top();
+		if (_description) {
+			top += _description->height()
+				+ st::newGroupDescriptionPadding.bottom()
+				+ st::newGroupDescriptionPadding.top();
+		}
+		_bulkCount->moveToLeft(sideLeft, top);
 	}
 }
 
@@ -790,6 +819,22 @@ void GroupInfoBox::submit() {
 		_title->showError();
 		return;
 	}
+	const auto bulkCount = _bulkCount
+		? std::max(1, _bulkCount->getLastText().toInt())
+		: 1;
+	if (bulkCount > 1
+			&& (_type == Type::Group || _type == Type::Megagroup)) {
+		_bulk = std::make_unique<BulkState>();
+		_bulk->baseTitle = title;
+		_bulk->description = description;
+		_bulk->photo = _photo->takeResultImage();
+		_bulk->total = bulkCount;
+		_bulk->nextIndex = 0;
+		_bulk->succeeded = 0;
+		_bulk->failed = 0;
+		createChannelsBulkNext();
+		return;
+	}
 	if (_type != Type::Group) {
 		createChannel(title, description);
 	} else if (_canAddBot) {
@@ -815,6 +860,70 @@ void GroupInfoBox::submit() {
 				std::move(initBox)),
 			Ui::LayerOption::KeepOther);
 	}
+}
+
+void GroupInfoBox::createChannelsBulkNext() {
+	if (!_bulk) {
+		return;
+	}
+	if (_bulk->nextIndex >= _bulk->total) {
+		const auto ok = _bulk->succeeded;
+		const auto fail = _bulk->failed;
+		const auto total = _bulk->total;
+		_bulk.reset();
+		_creationRequestId = 0;
+		uiShow()->showToast(fail
+			? u"Created %1 of %2 (%3 failed)"_q
+				.arg(ok).arg(total).arg(fail)
+			: u"Created %1 groups"_q.arg(ok));
+		closeBox();
+		return;
+	}
+	const auto index = _bulk->nextIndex++;
+	const auto title = u"%1 %2"_q.arg(_bulk->baseTitle).arg(index + 1);
+	const auto description = _bulk->description;
+	using Flag = MTPchannels_CreateChannel::Flag;
+	const auto flags = Flag::f_megagroup | Flag::f_ttl_period;
+	_creationRequestId = _api.request(MTPchannels_CreateChannel(
+		MTP_flags(flags),
+		MTP_string(title),
+		MTP_string(description),
+		MTPInputGeoPoint(),
+		MTPstring(),
+		MTP_int(0)
+	)).done([=](const MTPUpdates &result) {
+		_creationRequestId = 0;
+		_navigation->session().api().applyUpdates(result);
+		if (_bulk) {
+			++_bulk->succeeded;
+			const auto extractChats = [&]() -> const QVector<MTPChat>* {
+				switch (result.type()) {
+				case mtpc_updates:
+					return &result.c_updates().vchats().v;
+				case mtpc_updatesCombined:
+					return &result.c_updatesCombined().vchats().v;
+				}
+				return nullptr;
+			};
+			const auto chats = extractChats();
+			if (chats && !chats->empty()
+					&& chats->front().type() == mtpc_channel
+					&& !_bulk->photo.isNull()) {
+				const auto channel = _navigation->session().data().channel(
+					chats->front().c_channel().vid());
+				channel->session().api().peerPhoto().upload(
+					channel,
+					{ QImage(_bulk->photo) });
+			}
+		}
+		crl::on_main(this, [=] { createChannelsBulkNext(); });
+	}).fail([=](const MTP::Error &error) {
+		_creationRequestId = 0;
+		if (_bulk) {
+			++_bulk->failed;
+		}
+		crl::on_main(this, [=] { createChannelsBulkNext(); });
+	}).send();
 }
 
 void GroupInfoBox::createChannel(
@@ -951,6 +1060,11 @@ void GroupInfoBox::updateMaxHeight() {
 	if (_description) {
 		newHeight += st::newGroupDescriptionPadding.top()
 			+ _description->height()
+			+ st::newGroupDescriptionPadding.bottom();
+	}
+	if (_bulkCount) {
+		newHeight += st::newGroupDescriptionPadding.top()
+			+ _bulkCount->height()
 			+ st::newGroupDescriptionPadding.bottom();
 	}
 	setDimensions(st::boxWideWidth, newHeight);

@@ -25,6 +25,7 @@ class Session;
 namespace Ui {
 class FlatLabel;
 class InputField;
+class NumberInput;
 class PhoneInput;
 class UsernameInput;
 class Checkbox;
@@ -128,6 +129,7 @@ protected:
 
 private:
 	void createChannel(const QString &title, const QString &description);
+	void createChannelsBulkNext();
 	void createGroup(
 		base::weak_qptr<Ui::BoxContent> selectUsersBox,
 		const QString &title,
@@ -154,6 +156,7 @@ private:
 	object_ptr<Ui::UserpicButton> _photo = { nullptr };
 	object_ptr<Ui::InputField> _title = { nullptr };
 	object_ptr<Ui::InputField> _description = { nullptr };
+	object_ptr<Ui::NumberInput> _bulkCount = { nullptr };
 
 	// group / channel creation
 	mtpRequestId _creationRequestId = 0;
@@ -161,6 +164,17 @@ private:
 	ChannelData *_createdChannel = nullptr;
 	TimeId _ttlPeriod = 0;
 	bool _ttlPeriodOverridden = false;
+
+	struct BulkState {
+		QString baseTitle;
+		QString description;
+		QImage photo;
+		int total = 0;
+		int nextIndex = 0;
+		int succeeded = 0;
+		int failed = 0;
+	};
+	std::unique_ptr<BulkState> _bulk;
 
 };
 
